@@ -347,6 +347,7 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
     <!DOCTYPE html>
     <html>
     <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Inter:wght@400;600;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         body {{ margin: 0; font-family: 'Inter', sans-serif; background: transparent; color: #f8fafc; overflow-x: hidden; }}
@@ -363,6 +364,22 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
         .anillo {{ width: 68px; height: 68px; margin: 0; border-radius: 50%; position: relative; display: grid; place-items: center; flex-shrink: 0; }}
         .anillo::before {{ content: ""; position: absolute; inset: 0; border-radius: 50%; padding: 3px; background: conic-gradient(from 0deg, transparent, {T_ACT['accent']}, {T_ACT['sub_accent']}, transparent 60%, {T_ACT['accent']}); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: gira 4s linear infinite; }}
         @keyframes gira {{ to {{ transform: rotate(360deg); }} }}
+
+        /* OPTIMIZACIÓN RESPONSIVA MÓVIL */
+        @media (max-width: 768px) {{
+            body {{ padding: 2px; }}
+            .header-box {{ flex-direction: column; align-items: flex-start; padding: 14px 16px; gap: 10px; margin-bottom: 1.2rem; }}
+            .greeting {{ font-size: 2.2rem; }}
+            .kpi-grid {{ grid-template-columns: repeat(2, 1fr) !important; gap: 0.6rem !important; margin-bottom: 1.2rem !important; }}
+            .kpi-card {{ padding: 0.9rem 0.5rem !important; }}
+            .kpi-label {{ font-size: 0.65rem !important; }}
+            .kpi-value {{ font-size: 1.15rem !important; }}
+            .main-grid {{ grid-template-columns: 1fr !important; gap: 1.2rem !important; }}
+            .panel {{ padding: 1.1rem !important; border-radius: 12px !important; }}
+            .panel-title {{ font-size: 1.6rem !important; margin-bottom: 0.8rem !important; }}
+            .tilt-card {{ padding: 9px 12px !important; margin-bottom: 8px !important; }}
+            .summary-row {{ padding-bottom: 6px !important; margin-bottom: 8px !important; font-size: 0.88rem !important; }}
+        }}
     </style>
     </head>
     <body>
@@ -483,8 +500,8 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
     </body>
     </html>
     """
-    altura_dinamica = max(820, 520 + (cant_items * 88))
-    components.html(html_content, height=altura_dinamica, scrolling=True)
+    altura_dinamica = max(1120, 680 + (cant_items * 65))
+    components.html(html_content, height=altura_dinamica, scrolling=False)
 
     # --- CONTROL DE FIDUCIA VS NUBE PARA EL CLIENTE (SELECTOR TÁCTICO OPCIÓN 1) ---
     st.markdown("<br>", unsafe_allow_html=True)

@@ -718,6 +718,46 @@ div[data-testid="stSlider"] div[data-baseweb="slider"] ~ div div {{
     box-shadow: none !important;
 }}
 
+/* ================================================================== */
+/* 📱 OPTIMIZACIÓN RESPONSIVA DEFINITIVA PARA SMARTPHONES / MÓVILES    */
+/* ================================================================== */
+@media (max-width: 768px) {{
+    .block-container,
+    [data-testid="stMainBlockContainer"],
+    [data-testid="stAppViewBlockContainer"],
+    section[data-testid="stMain"] > div {{
+        padding-top: 2.2rem !important;
+        padding-bottom: 2rem !important;
+        padding-left: 0.6rem !important;
+        padding-right: 0.6rem !important;
+        max-width: 100% !important;
+    }}
+
+    [data-testid="stTabs"] [role="tablist"] {{
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        scrollbar-width: none !important;
+        gap: 6px !important;
+        padding-bottom: 6px !important;
+    }}
+
+    [data-testid="stTabs"] button {{
+        white-space: nowrap !important;
+        padding: 0.5rem 0.9rem !important;
+        font-size: 0.88rem !important;
+    }}
+
+    .card-custom, [data-testid="stVerticalBlockBorderWrapper"] > div {{
+        padding: 1.1rem !important;
+        border-radius: 12px !important;
+    }}
+
+    iframe {{
+        width: 100% !important;
+        border: none !important;
+    }}
+}}
+
 </style>
 <div class="watermark-bg"></div>
 
