@@ -326,17 +326,17 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
             cant_items += 1
             monto_item = calc[k] * v['precio']
             filas_html += f"""
-            <div class="tilt-card" style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:rgba(12,15,20,0.85); border:1px solid rgba(255,255,255,0.06); border-radius:10px; margin-bottom:10px; transition:transform 0.15s ease-out, box-shadow 0.15s ease-out;">
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <span style="font-size:1.8rem;">{v['icono']}</span>
-                    <div>
-                        <div style="font-weight:700; font-size:1rem; color:#f8fafc;">{v['nombre']}</div>
-                        <div style="color:#94a3b8; font-size:11px;">Precio unitario: {formato_pesos(v['precio'])} USD</div>
+            <div class="tilt-card">
+                <div class="tilt-card-left">
+                    <span style="font-size:1.6rem; flex-shrink:0;">{v['icono']}</span>
+                    <div style="min-width:0;">
+                        <div class="tilt-card-name">{v['nombre']}</div>
+                        <div class="tilt-card-unit">Precio unitario: {formato_pesos(v['precio'])} USD</div>
                     </div>
                 </div>
-                <div style="text-align:right;">
-                    <div style="color:{T_ACT['accent']}; font-weight:800; font-family:'Space Grotesk', sans-serif; font-size:1.15rem;">x{calc[k]}</div>
-                    <div class="num-anim secure-blur" data-val="{monto_item}" title="Desencriptar" style="color:#10b981; font-weight:800; font-family:'Space Grotesk', sans-serif; font-size:1rem;">$ 0 USD</div>
+                <div class="tilt-card-right">
+                    <div style="color:{T_ACT['accent']}; font-weight:800; font-family:'Space Grotesk', sans-serif; font-size:1.05rem;">x{calc[k]}</div>
+                    <div class="num-anim secure-blur" data-val="{monto_item}" title="Desencriptar" style="color:#10b981; font-weight:800; font-family:'Space Grotesk', sans-serif; font-size:0.92rem; white-space:nowrap;">$ 0 USD</div>
                 </div>
             </div>
             """
@@ -347,38 +347,54 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
     <!DOCTYPE html>
     <html>
     <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Inter:wght@400;600;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {{ margin: 0; font-family: 'Inter', sans-serif; background: transparent; color: #f8fafc; overflow-x: hidden; }}
-        .header-box {{ display: flex; align-items: center; justify-content: space-between; gap: 20px; background: {T_ACT['card']}; border: 1px solid {T_ACT['border']}; border-radius: 14px; padding: 20px 24px; margin-bottom: 2rem; box-shadow: 0 16px 40px rgba(0,0,0,0.5); }}
-        .greeting {{ font-family: 'Teko', sans-serif; font-size: clamp(2.5rem, 5vw, 3.8rem); margin: 0; line-height: 1; text-transform: uppercase; color: #f8fafc; }}
-        .kpi-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-bottom: 2rem; }}
-        .kpi-card {{ background: {T_ACT['card']}; border: 1px solid {T_ACT['border']}; border-radius: 12px; padding: 1.2rem; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }}
-        .kpi-label {{ font-size: 0.72rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }}
-        .kpi-value {{ font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.2rem, 2.4vw, 1.6rem); font-weight: 800; }}
-        .main-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; }}
-        .panel {{ background: {T_ACT['card']}; border: 1px solid {T_ACT['border']}; border-radius: 14px; padding: 1.8rem; box-shadow: 0 12px 36px rgba(0,0,0,0.4); }}
-        .panel-title {{ font-family: 'Teko', sans-serif; font-size: 2rem; margin: 0 0 1.2rem 0; text-transform: uppercase; color: #f8fafc; }}
-        .summary-row {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }}
-        .anillo {{ width: 68px; height: 68px; margin: 0; border-radius: 50%; position: relative; display: grid; place-items: center; flex-shrink: 0; }}
-        .anillo::before {{ content: ""; position: absolute; inset: 0; border-radius: 50%; padding: 3px; background: conic-gradient(from 0deg, transparent, {T_ACT['accent']}, {T_ACT['sub_accent']}, transparent 60%, {T_ACT['accent']}); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: gira 4s linear infinite; }}
-        @keyframes gira {{ to {{ transform: rotate(360deg); }} }}
+        * {{ box-sizing: border-box; }}
+        body {{ margin: 0; font-family: 'Inter', sans-serif; background: transparent; color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }}
+        .header-box {{ display: flex; align-items: center; justify-content: space-between; gap: 20px; background: {T_ACT['card']}; border: 1px solid {T_ACT['border']}; border-radius: 14px; padding: 18px 22px; margin-bottom: 1.5rem; box-shadow: 0 16px 40px rgba(0,0,0,0.5); }}
+        .greeting {{ font-family: 'Teko', sans-serif; font-size: clamp(2rem, 3.8vw, 3.5rem); margin: 0; line-height: 1.05; text-transform: uppercase; color: #f8fafc; }}
+        
+        .kpi-grid {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.8rem; }}
+        .kpi-card {{ background: {T_ACT['card']}; border: 1px solid {T_ACT['border']}; border-radius: 12px; padding: 1.1rem 0.8rem; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); min-width: 0; }}
+        .kpi-label {{ font-size: 0.72rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.4rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
+        .kpi-value {{ font-family: 'Space Grotesk', sans-serif; font-size: clamp(1rem, 1.8vw, 1.45rem); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
+        
+        .main-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }}
+        .panel {{ background: {T_ACT['card']}; border: 1px solid {T_ACT['border']}; border-radius: 14px; padding: 1.6rem; box-shadow: 0 12px 36px rgba(0,0,0,0.4); min-width: 0; }}
+        .panel-title {{ font-family: 'Teko', sans-serif; font-size: 1.85rem; margin: 0 0 1.1rem 0; text-transform: uppercase; color: #f8fafc; letter-spacing: 0.5px; }}
+        .summary-row {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); gap: 8px; font-size: 0.92rem; }}
+        
+        .tilt-card {{ display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(12,15,20,0.85); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; margin-bottom: 8px; gap: 10px; }}
+        .tilt-card-left {{ display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1 1 auto; }}
+        .tilt-card-name {{ font-weight: 700; font-size: 0.95rem; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
+        .tilt-card-unit {{ color: #94a3b8; font-size: 11px; white-space: nowrap; }}
+        .tilt-card-right {{ text-align: right; flex-shrink: 0; }}
 
-        /* OPTIMIZACIÓN RESPONSIVA MÓVIL */
-        @media (max-width: 768px) {{
-            body {{ padding: 2px; }}
-            .header-box {{ flex-direction: column; align-items: flex-start; padding: 14px 16px; gap: 10px; margin-bottom: 1.2rem; }}
-            .greeting {{ font-size: 2.2rem; }}
-            .kpi-grid {{ grid-template-columns: repeat(2, 1fr) !important; gap: 0.6rem !important; margin-bottom: 1.2rem !important; }}
-            .kpi-card {{ padding: 0.9rem 0.5rem !important; }}
-            .kpi-label {{ font-size: 0.65rem !important; }}
-            .kpi-value {{ font-size: 1.15rem !important; }}
+        /* AJUSTES RESPONSIVOS MÓVILES (IPHONE / ANDROID) */
+        @media (max-width: 820px) {{
+            .header-box {{ flex-direction: column; align-items: flex-start; padding: 12px 14px; gap: 8px; margin-bottom: 1.2rem; }}
+            .greeting {{ font-size: 1.85rem; }}
+            
+            .kpi-grid {{ grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; margin-bottom: 1.2rem !important; }}
+            .kpi-card {{ padding: 0.75rem 0.4rem !important; }}
+            .kpi-label {{ font-size: 0.65rem !important; letter-spacing: 0.3px !important; }}
+            .kpi-value {{ font-size: clamp(0.85rem, 3.2vw, 1.15rem) !important; }}
+            
+            /* KPI 4 destacado a lo ancho en móvil para que los 14 dígitos del Total COP no se corten */
+            .kpi-card-featured {{ grid-column: span 2 !important; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(12, 15, 20, 0.95)) !important; border-color: rgba(16, 185, 129, 0.45) !important; padding: 0.85rem !important; }}
+            .kpi-card-featured .kpi-value {{ font-size: clamp(1.2rem, 4.8vw, 1.65rem) !important; }}
+            
             .main-grid {{ grid-template-columns: 1fr !important; gap: 1.2rem !important; }}
-            .panel {{ padding: 1.1rem !important; border-radius: 12px !important; }}
-            .panel-title {{ font-size: 1.6rem !important; margin-bottom: 0.8rem !important; }}
-            .tilt-card {{ padding: 9px 12px !important; margin-bottom: 8px !important; }}
-            .summary-row {{ padding-bottom: 6px !important; margin-bottom: 8px !important; font-size: 0.88rem !important; }}
+            .panel {{ padding: 1rem 0.85rem !important; border-radius: 12px !important; }}
+            .panel-title {{ font-size: 1.55rem !important; margin-bottom: 0.8rem !important; }}
+            
+            .tilt-card {{ padding: 8px 10px !important; }}
+            .tilt-card-name {{ font-size: 0.86rem !important; }}
+            .tilt-card-unit {{ font-size: 10px !important; }}
+            
+            .summary-row {{ padding-bottom: 6px !important; margin-bottom: 7px !important; font-size: 0.82rem !important; }}
+            .summary-total {{ font-size: 1.25rem !important; }}
         }}
     </style>
     </head>
@@ -408,7 +424,7 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
                 <div class="kpi-label">COMISIÓN BANCO ({pct_banco*100:.0f}%)</div>
                 <div id="kpi3" class="kpi-value num-anim secure-blur" title="Pase el cursor para desencriptar" data-val="{b_usd}" style="color: #ef4444;">$ 0</div>
             </div>
-            <div class="kpi-card">
+            <div class="kpi-card kpi-card-featured">
                 <div class="kpi-label">TOTAL FINAL (COP)</div>
                 <div id="kpi4" class="kpi-value num-anim secure-blur" title="Pase el cursor para desencriptar" data-val="{t_cop}" style="color: #10b981;">$ 0</div>
             </div>
@@ -510,39 +526,32 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
         st.markdown("<h4 class='font-teko' style='font-size:1.8rem; margin-top:0; color:white;'>⚙️ TU PREFERENCIA DE DESEMBOLSO (REMANENTE 99%)</h4>", unsafe_allow_html=True)
         st.caption("Elige libremente qué porcentaje deseas recibir a través de Fiducia Bancaria y cuánto a través de la Nube.")
         
-        key_fid_state = f"pct_fid_{cedula}"
-        if key_fid_state not in st.session_state:
-            st.session_state[key_fid_state] = int(pct_fid)
+        num_key = f"num_input_{cedula}"
+        if num_key not in st.session_state:
+            st.session_state[num_key] = int(pct_fid)
 
-        st.markdown("<p style='color:#94a3b8; font-size:0.88rem; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;'>Selección rápida de 1 clic:</p>", unsafe_allow_html=True)
+        def set_fid_callback(val):
+            st.session_state[num_key] = val
+
+        st.markdown("<p style='color:#94a3b8; font-size:0.88rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;'>Distribución Rápida de 1 Clic:</p>", unsafe_allow_html=True)
         b_col1, b_col2, b_col3, b_col4 = st.columns(4)
         with b_col1:
-            if st.button("🏛️ 100% Fiducia", use_container_width=True, key=f"btn_100_{cedula}"):
-                st.session_state[key_fid_state] = 100
-                st.rerun()
+            st.button("🏛️ 100% Fiducia", use_container_width=True, key=f"btn_100_{cedula}", on_click=set_fid_callback, args=(100,))
         with b_col2:
-            if st.button("🏛️ 80% / ☁️ 20%", use_container_width=True, key=f"btn_80_{cedula}"):
-                st.session_state[key_fid_state] = 80
-                st.rerun()
+            st.button("🏛️ 80% / ☁️ 20%", use_container_width=True, key=f"btn_80_{cedula}", on_click=set_fid_callback, args=(80,))
         with b_col3:
-            if st.button("⚖️ 50% / ☁️ 50%", use_container_width=True, key=f"btn_50_{cedula}"):
-                st.session_state[key_fid_state] = 50
-                st.rerun()
+            st.button("⚖️ 50% / ☁️ 50%", use_container_width=True, key=f"btn_50_{cedula}", on_click=set_fid_callback, args=(50,))
         with b_col4:
-            if st.button("☁️ 100% Nube", use_container_width=True, key=f"btn_0_{cedula}"):
-                st.session_state[key_fid_state] = 0
-                st.rerun()
+            st.button("☁️ 100% Nube", use_container_width=True, key=f"btn_0_{cedula}", on_click=set_fid_callback, args=(0,))
 
         st.markdown("<div style='margin-top:12px;'></div>", unsafe_allow_html=True)
         c_num1, c_num2 = st.columns([2.5, 1.2])
         with c_num1:
-            val_actual = int(st.session_state[key_fid_state])
             nuevo_pct_fid = st.number_input(
                 "O ajusta el % exacto para Fiducia Bancaria:",
-                min_value=0, max_value=100, value=val_actual, step=5,
-                key=f"num_input_{cedula}"
+                min_value=0, max_value=100, step=5,
+                key=num_key
             )
-            st.session_state[key_fid_state] = nuevo_pct_fid
             nuevo_pct_nube = 100 - nuevo_pct_fid
             
             f_usd_fid_dyn = remanente_usd * (nuevo_pct_fid / 100.0)
