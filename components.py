@@ -829,6 +829,13 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
                         )
                         nuevo_id = cur.lastrowid
                     registrar_auditoria(cedula, "RECLAMACION_ENVIADA", f"Radicado #{nuevo_id} - Evidencia: {bool(evidencia)}")
+                    
+                    # Notificación automática por correo a la administración con archivo adjunto
+                    try:
+                        from email_service import enviar_notificacion_reclamacion
+                        enviar_notificacion_reclamacion(cedula, msj_reclamo.strip(), path_evidencia, nuevo_id)
+                    except Exception: pass
+
                     st.success(f"✅ ¡Solicitud radicada con éxito bajo el Radicado #{nuevo_id}! El equipo administrativo ya tiene acceso inmediato a tu soporte y a tu mensaje.")
                     st.rerun()
 

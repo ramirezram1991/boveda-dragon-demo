@@ -141,11 +141,38 @@ def init_db():
         for cod, nom, pre, ico, act in activos_default:
             conn.execute('INSERT OR IGNORE INTO catalogo_activos (codigo, nombre, precio_usd, icono, activo) VALUES (?, ?, ?, ?, ?)', (cod, nom, pre, ico, act))
 
+        # 9. Configuraciones del Sistema (Correos, Notificaciones, etc.)
+        conn.execute('''CREATE TABLE IF NOT EXISTS configuraciones_sistema (
+            clave TEXT PRIMARY KEY,
+            valor TEXT NOT NULL
+        )''')
+        conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('correo_remitente_otp', 'personaldramirez@gmail.com'))
+        conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('password_remitente_otp', 'qism kdgy mbnv eyfh'))
+        conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('servidor_smtp', 'smtp.gmail.com'))
+        conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('puerto_smtp', '587'))
+        conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('correo_destino_reclamos', 'personaldramirez@gmail.com'))
+        conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('notificar_por_correo', '1'))
+
         # Insertar parámetros iniciales por defecto
         conn.execute('INSERT OR IGNORE INTO parametros_globales (clave, valor) VALUES (?, ?)', ('descuento_general', 10.0))
         conn.execute('INSERT OR IGNORE INTO parametros_globales (clave, valor) VALUES (?, ?)', ('comision_banco', 1.0))
 
 init_db()
+
+# --- Funciones de Configuración del Sistema (Correos, Canales, etc.) ---
+def obtener_config_sistema(clave, default=""):
+    with get_db_connection() as conn:
+        c = conn.cursor()
+        c.execute("SELECT valor FROM configuraciones_sistema WHERE clave=?", (clave,))
+        row = c.fetchone()
+        return row[0] if row else default
+
+def guardar_config_sistema(clave, valor):
+    with get_db_connection() as conn:
+        conn.execute(
+            "INSERT OR REPLACE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)",
+            (clave, str(valor).strip())
+        )
 
 # --- Funciones de Catálogo Dinámico ---
 def obtener_catalogo_activos():

@@ -37,7 +37,14 @@ from database import (
     guardar_activo,
     obtener_parametros_globales,
     guardar_parametro_global,
-    guardar_modificacion_manual
+    guardar_modificacion_manual,
+    obtener_config_sistema,
+    guardar_config_sistema
+)
+from email_service import (
+    enviar_correo_otp,
+    probar_conexion_smtp,
+    obtener_credenciales_smtp
 )
 from security import (
     sanitizar_texto,
@@ -258,17 +265,7 @@ elif st.session_state['vista_actual'] in ['login', 'recuperar']:
                         cuerpo = f"OPERACIÓN DRAGÓN\n\nSu PIN temporal de rescate es: {pin_temporal}\nUse este PIN como contraseña para acceder y luego cámbiela."
                         
                         with st.spinner("Enviando rescate..."):
-                            exito = False
-                            try:
-                                msg = MIMEMultipart()
-                                msg['From'] = REMITENTE_EMAIL; msg['To'] = rec_email
-                                msg['Subject'] = f"Código de Acceso - Operación Dragón [{datetime.now().strftime('%H%M%S')}]"
-                                msg.attach(MIMEText(cuerpo, "plain"))
-                                s = smtplib.SMTP('smtp.gmail.com', 587, timeout=5)
-                                s.starttls(); s.login(REMITENTE_EMAIL, REMITENTE_PASSWORD.replace(" ", ""))
-                                s.send_message(msg); s.quit()
-                                exito = True
-                            except Exception: pass
+                            exito, msj_envio = enviar_correo_otp(rec_email, pin_temporal)
                         
                         salt = bcrypt.gensalt(12)
                         pass_hash = bcrypt.hashpw(pin_temporal.encode(), salt).decode()
@@ -391,18 +388,10 @@ elif st.session_state['vista_actual'] == 'registro':
                         else:
                             codigo_otp = str(random.randint(100000, 999999))
                             st.session_state['codigo_otp_debug'] = codigo_otp
-                            exito = False
-                            try:
-                                msg = MIMEMultipart()
-                                msg['From'] = REMITENTE_EMAIL; msg['To'] = e_reg
-                                msg['Subject'] = f"Código de Acceso - Operación Dragón [{datetime.now().strftime('%H%M%S')}]"
-                                msg.attach(MIMEText(f"OPERACIÓN DRAGÓN\n\nSu código de seguridad es: {codigo_otp}\n\n[Sistema Anti-Spam activado]", 'plain'))
-                                s = smtplib.SMTP('smtp.gmail.com', 587, timeout=5)
-                                s.starttls(); s.login(REMITENTE_EMAIL, REMITENTE_PASSWORD.replace(" ", ""))
-                                s.send_message(msg); s.quit()
-                                st.toast("SMTP exitoso: Google aceptó el correo.", icon="✉️")
-                                exito = True
-                            except Exception: pass
+                            with st.spinner("Enviando código de seguridad OTP..."):
+                                exito, msj_envio = enviar_correo_otp(e_reg, codigo_otp)
+                                if exito:
+                                    st.toast("SMTP exitoso: Código enviado al correo.", icon="✉️")
                             
                             st.session_state['temp_data'] = {'dni': cd, 'email': e_reg, 'pin': p_reg, 'otp': codigo_otp}
                             st.session_state['registro_paso'] = 2
@@ -467,11 +456,12 @@ elif st.session_state['vista_actual'] == 'dashboard':
         </div>
         """, unsafe_allow_html=True)
         
-        tab_busc, tab_archivos, tab_activos, tab_tasas, tab_logs, tab_reclamos, tab_arquitectos = st.tabs([
+        tab_busc, tab_archivos, tab_activos, tab_tasas, tab_correos, tab_logs, tab_reclamos, tab_arquitectos = st.tabs([
             "🔍 Buscador y Cliente",
             "📤 Subir Matrices Excel",
             "🏷️ Gestión de Activos",
             "⚙️ Parámetros Globales",
+            "📧 Canales y Correos",
             "🕵️‍♂️ Bitácora Forense",
             "📬 Reclamaciones",
             "🛡️ Arquitectos"
@@ -625,7 +615,88 @@ elif st.session_state['vista_actual'] == 'dashboard':
                 st.success("✅ Parámetros financieros actualizados para todos los participantes.")
                 st.rerun()
 
-        # --- TAB 5: BITÁCORA FORENSE DE AUDITORÍA ---
+        # --- TAB 5: CANALES DE CORREO (ENVÍO DE OTP Y RECEPCIÓN DE RECLAMACIONES) ---
+        with tab_correos:
+            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>CANALES DE CORREO ELECTRÓNICO (OTP Y RECLAMACIONES)</h4>", unsafe_allow_html=True)
+            st.caption("Administre las casillas de correo para la salida de códigos de seguridad (OTP) y la recepción directa de imágenes y vouchers de reclamación.")
+            
+            c_cor1, c_cor2 = st.columns(2)
+            with c_cor1:
+                st.markdown("<div class='card-custom'>", unsafe_allow_html=True)
+                st.markdown("<h5 class='font-teko' style='font-size:1.35rem; color:#f8fafc; margin-top:0;'>📤 CASILLA REMITENTE PARA ENVÍO DE OTP</h5>", unsafe_allow_html=True)
+                st.markdown("<p style='color:#94a3b8; font-size:0.85rem;'>Desde esta cuenta de correo saldrán los códigos de seguridad OTP y pines de rescate hacia los usuarios.</p>", unsafe_allow_html=True)
+                
+                cfg_rem_email = st.text_input(
+                    "Correo electrónico remitente (ej. Gmail / Corporativo):",
+                    value=obtener_config_sistema("correo_remitente_otp", REMITENTE_EMAIL),
+                    placeholder="boveda.operacion.dragon@gmail.com",
+                    key="input_cfg_rem_email"
+                )
+                
+                cfg_rem_pass = st.text_input(
+                    "Contraseña de aplicación SMTP (Google App Password):",
+                    value=obtener_config_sistema("password_remitente_otp", REMITENTE_PASSWORD),
+                    type="password",
+                    help="Si usa Gmail, use una contraseña de aplicación de 16 caracteres generada en myaccount.google.com/security.",
+                    key="input_cfg_rem_pass"
+                )
+                
+                with st.expander("⚙️ Parámetros Técnicos del Servidor SMTP"):
+                    cfg_smtp_server = st.text_input("Host del Servidor SMTP:", value=obtener_config_sistema("servidor_smtp", "smtp.gmail.com"), key="input_cfg_smtp_server")
+                    cfg_smtp_port = st.text_input("Puerto SMTP:", value=obtener_config_sistema("puerto_smtp", "587"), key="input_cfg_smtp_port")
+                st.markdown("</div>", unsafe_allow_html=True)
+                
+            with c_cor2:
+                st.markdown("<div class='card-custom'>", unsafe_allow_html=True)
+                st.markdown("<h5 class='font-teko' style='font-size:1.35rem; color:#f8fafc; margin-top:0;'>📥 CASILLA DESTINATARIO PARA RECIBIR RECLAMACIONES</h5>", unsafe_allow_html=True)
+                st.markdown("<p style='color:#94a3b8; font-size:0.85rem;'>A esta cuenta de correo llegarán las alertas inmediatas con las imágenes, fotos y vouchers adjuntos que suban los clientes.</p>", unsafe_allow_html=True)
+                
+                cfg_dest_reclamos = st.text_input(
+                    "Correo(s) para recibir comprobantes y vouchers:",
+                    value=obtener_config_sistema("correo_destino_reclamos", "personaldramirez@gmail.com"),
+                    placeholder="auditoria@bovedadragon.com, administracion@...",
+                    help="Puede ingresar uno o varios correos separados por coma (,)",
+                    key="input_cfg_dest_reclamos"
+                )
+                
+                cfg_notif_activa = st.checkbox(
+                    "Reenviar automáticamente cada soporte con imagen adjunta",
+                    value=(obtener_config_sistema("notificar_por_correo", "1") == "1"),
+                    help="Si está activo, cada vez que un usuario envíe un reclamo con foto o PDF, el archivo se enviará como adjunto al correo receptor.",
+                    key="input_cfg_notif_activa"
+                )
+                
+                st.markdown("""
+                <div style='background:rgba(56, 189, 248, 0.08); border-left:3px solid #38bdf8; padding:8px 12px; border-radius:6px; margin-top:14px; font-size:0.82rem; color:#cbd5e1;'>
+                    ℹ️ <strong>Adjuntos Automáticos:</strong> Las fotos de comprobantes (JPG, PNG, WEBP) o documentos PDF se envían adjuntos en alta calidad directamente al correo configurado.
+                </div>
+                """, unsafe_allow_html=True)
+                st.markdown("</div>", unsafe_allow_html=True)
+
+            st.markdown("<br>", unsafe_allow_html=True)
+            col_save_c1, col_save_c2 = st.columns([1.5, 1])
+            with col_save_c1:
+                if st.button("💾 Guardar Configuración de Canales de Correo", type="primary", use_container_width=True, key="btn_save_correo_cfg"):
+                    guardar_config_sistema("correo_remitente_otp", cfg_rem_email)
+                    guardar_config_sistema("password_remitente_otp", cfg_rem_pass)
+                    guardar_config_sistema("servidor_smtp", cfg_smtp_server)
+                    guardar_config_sistema("puerto_smtp", cfg_smtp_port)
+                    guardar_config_sistema("correo_destino_reclamos", cfg_dest_reclamos)
+                    guardar_config_sistema("notificar_por_correo", "1" if cfg_notif_activa else "0")
+                    registrar_auditoria("ADMIN", "CAMBIO_CONFIG_CORREOS", f"Remitente:{cfg_rem_email} | DestinoReclamos:{cfg_dest_reclamos}")
+                    st.success("✅ Configuración de correos guardada exitosamente.")
+                    st.rerun()
+
+            with col_save_c2:
+                with st.popover("🧪 Probar Conexión SMTP"):
+                    test_email_target = st.text_input("Enviar correo de prueba a:", value=cfg_dest_reclamos.split(',')[0].strip(), key="input_test_email")
+                    if st.button("Enviar Prueba Ahora", type="secondary", use_container_width=True, key="btn_send_test_email"):
+                        with st.spinner("Enviando correo de prueba..."):
+                            ok, msj_test = probar_conexion_smtp(test_email_target)
+                            if ok: st.success(msj_test)
+                            else: st.error(msj_test)
+
+        # --- TAB 6: BITÁCORA FORENSE DE AUDITORÍA ---
         with tab_logs:
             st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>REGISTRO FORENSE DE AUDITORÍA EN TIEMPO REAL</h4>", unsafe_allow_html=True)
             df_logs = obtener_logs()
