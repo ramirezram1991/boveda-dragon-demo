@@ -511,14 +511,14 @@ elif st.session_state['vista_actual'] == 'dashboard':
                     nom_completo = str(u_row['NOMBRE COMPLETO']).strip().upper()
                     lider_titular = str(u_row['LIDER']).strip().upper()
                     st.markdown(f"""
-                    <div style="background:linear-gradient(135deg, rgba(234, 88, 12, 0.12), rgba(15, 23, 42, 0.85)); border:1px solid rgba(234, 88, 12, 0.4); border-left:4px solid var(--accent); padding:14px 18px; border-radius:10px; margin-bottom:1.2rem; display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <div style="font-size:0.72rem; color:#94a3b8; font-weight:700; letter-spacing:1px; text-transform:uppercase;">TITULAR OFICIAL AUDITADO</div>
-                            <div style="font-family:'Teko', sans-serif; font-size:1.85rem; color:#f8fafc; line-height:1.1; text-transform:uppercase;">{nom_completo}</div>
-                            <div style="color:#cbd5e1; font-size:0.88rem; font-weight:600;">CÉDULA (CC) / ID: <span style="color:white;">{bcd}</span> &nbsp;|&nbsp; LÍDER: <span style="color:var(--accent);">{lider_titular}</span></div>
+                    <div class="card-titular-auditado">
+                        <div class="titular-info-left">
+                            <div class="titular-subtag">TITULAR OFICIAL AUDITADO</div>
+                            <div class="titular-nombre">{nom_completo}</div>
+                            <div class="titular-meta">CÉDULA (CC) / ID: <span style="color:white;">{bcd}</span> &nbsp;|&nbsp; LÍDER: <span style="color:var(--accent);">{lider_titular}</span></div>
                         </div>
-                        <div style="text-align:right;">
-                            <span style="background:rgba(16, 185, 129, 0.15); color:#10b981; border:1px solid rgba(16, 185, 129, 0.35); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; text-transform:uppercase;">● ACTIVO EN MATRIZ</span>
+                        <div class="titular-badge-right">
+                            <span class="badge-activo-matriz">● ACTIVO EN MATRIZ</span>
                         </div>
                     </div>
                     """, unsafe_allow_html=True)

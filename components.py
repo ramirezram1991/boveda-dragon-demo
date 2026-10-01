@@ -336,7 +336,7 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
                 </div>
                 <div class="tilt-card-right">
                     <div style="color:{T_ACT['accent']}; font-weight:800; font-family:'Space Grotesk', sans-serif; font-size:1.05rem;">x{calc[k]}</div>
-                    <div class="num-anim secure-blur" data-val="{monto_item}" title="Desencriptar" style="color:#10b981; font-weight:800; font-family:'Space Grotesk', sans-serif; font-size:0.92rem; white-space:nowrap;">$ 0 USD</div>
+                    <div class="num-anim secure-blur glow-green" data-val="{monto_item}" title="Desencriptar" style="font-weight:800; font-family:'Space Grotesk', sans-serif; font-size:0.92rem; white-space:nowrap;">$ 0 USD</div>
                 </div>
             </div>
             """
@@ -351,7 +351,7 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Inter:wght@400;600;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         * {{ box-sizing: border-box; }}
-        body {{ margin: 0; font-family: 'Inter', sans-serif; background: transparent; color: #f8fafc; overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }}
+        body {{ margin: 0; font-family: 'Inter', sans-serif; background: transparent; color: #f8fafc; overflow: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }}
         .header-box {{ display: flex; align-items: center; justify-content: space-between; gap: 20px; background: {T_ACT['card']}; border: 1px solid {T_ACT['border']}; border-radius: 14px; padding: 18px 22px; margin-bottom: 1.5rem; box-shadow: 0 16px 40px rgba(0,0,0,0.5); }}
         .greeting {{ font-family: 'Teko', sans-serif; font-size: clamp(2rem, 3.8vw, 3.5rem); margin: 0; line-height: 1.05; text-transform: uppercase; color: #f8fafc; }}
         
@@ -370,6 +370,35 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
         .tilt-card-name {{ font-weight: 700; font-size: 0.95rem; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
         .tilt-card-unit {{ color: #94a3b8; font-size: 11px; white-space: nowrap; }}
         .tilt-card-right {{ text-align: right; flex-shrink: 0; }}
+
+        /* CARD DESTACADA VALOR TOTAL A DESEMBOLSAR */
+        .desembolso-destacado-card {{
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(12, 15, 20, 0.95));
+            border: 1px solid rgba(16, 185, 129, 0.45);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 1.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 0 16px rgba(16, 185, 129, 0.1);
+            gap: 12px;
+        }}
+        .desembolso-destacado-label {{
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: #f8fafc;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }}
+        .desembolso-destacado-val {{
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 800;
+            font-size: clamp(1.2rem, 2.2vw, 1.75rem);
+            text-align: right;
+            white-space: nowrap;
+        }}
 
         /* ILUMINACIÓN NEÓN SUPREMA Y BRILLO QUÁNTICO EN NÚMEROS (4K NEON GLOW) */
         .glow-green {{
@@ -460,8 +489,27 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
             .tilt-card-name {{ font-size: 0.86rem !important; }}
             .tilt-card-unit {{ font-size: 10px !important; }}
             
-            .summary-row {{ padding-bottom: 6px !important; margin-bottom: 7px !important; font-size: 0.82rem !important; }}
-            .summary-total {{ font-size: 1.25rem !important; }}
+            .summary-row {{ padding-bottom: 6px !important; margin-bottom: 7px !important; font-size: 0.82rem !important; flex-wrap: wrap !important; gap: 4px !important; }}
+            
+            .desembolso-destacado-card {{
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                padding: 12px 14px !important;
+                gap: 6px !important;
+            }}
+            .desembolso-destacado-label {{
+                font-size: 0.76rem !important;
+                color: #94a3b8 !important;
+                letter-spacing: 0.6px !important;
+                white-space: normal !important;
+            }}
+            .desembolso-destacado-val {{
+                font-size: clamp(1.1rem, 5.2vw, 1.45rem) !important;
+                text-align: left !important;
+                width: 100% !important;
+                white-space: normal !important;
+                word-break: break-all !important;
+            }}
         }}
     </style>
     </head>
@@ -521,9 +569,9 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
                     <span style="color:#a855f7; font-weight:600;">☁️ NUBE ASIGNADA ({pct_nube:.0f}%)</span>
                     <span class="num-anim glow-purple" data-val="{f_usd_nube * trm_actual}" style="font-family:'Space Grotesk'; font-weight:700;">$ 0</span>
                 </div>
-                <div class="summary-row" style="border:none; margin-top:1.5rem;">
-                    <span style="font-weight:800; font-size:1.1rem; color:white;">VALOR A DESEMBOLSAR</span>
-                    <span class="num-anim glow-green summary-total" data-val="{t_cop}" style="font-family:'Space Grotesk'; font-weight:800; font-size:1.8rem;">$ 0</span>
+                <div class="desembolso-destacado-card">
+                    <div class="desembolso-destacado-label">VALOR TOTAL A DESEMBOLSAR</div>
+                    <div class="num-anim glow-green desembolso-destacado-val" data-val="{t_cop}">$ 0</div>
                 </div>
             </div>
         </div>
@@ -583,7 +631,9 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
     </body>
     </html>
     """
-    altura_dinamica = max(1120, 680 + (cant_items * 65))
+    # Altura dinámica generosa para que en smartphones (donde los paneles se apilan en 1 sola columna)
+    # todo el contenido quepa holgadamente sin atrapar el scroll ni generar barras internas molestas
+    altura_dinamica = max(1360, 940 + (cant_items * 75))
     components.html(html_content, height=altura_dinamica, scrolling=False)
 
     # --- CONTROL DE FIDUCIA VS NUBE PARA EL CLIENTE (SELECTOR TÁCTICO OPCIÓN 1) ---
@@ -625,10 +675,10 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
             f_usd_nube_dyn = remanente_usd * (nuevo_pct_nube / 100.0)
             
             st.markdown(f"""
-            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.85); padding:10px 16px; border-radius:10px; border:1px solid rgba(255,255,255,0.08); margin-top:8px; font-family:'Space Grotesk', sans-serif; font-size:0.92rem;">
-                <div>🏛️ <strong style="color:#f8fafc;">Fiducia: {nuevo_pct_fid}%</strong> <span style="color:#10b981; font-weight:700; text-shadow:0 0 10px #10b981, 0 0 20px rgba(16,185,129,0.65);">({formato_pesos(f_usd_fid_dyn * trm_actual)} COP)</span></div>
-                <div style="color:#64748b;">•</div>
-                <div>☁️ <strong style="color:#f8fafc;">Nube: {nuevo_pct_nube}%</strong> <span style="color:#38bdf8; font-weight:700; text-shadow:0 0 10px #38bdf8, 0 0 20px rgba(56,189,248,0.65);">({formato_pesos(f_usd_nube_dyn * trm_actual)} COP)</span></div>
+            <div class="distribucion-live-preview">
+                <div class="distribucion-item">🏛️ <strong style="color:#f8fafc;">Fiducia: {nuevo_pct_fid}%</strong> <span class="glow-green" style="font-weight:700;">({formato_pesos(f_usd_fid_dyn * trm_actual)} COP)</span></div>
+                <div class="distribucion-sep">•</div>
+                <div class="distribucion-item">☁️ <strong style="color:#f8fafc;">Nube: {nuevo_pct_nube}%</strong> <span class="glow-cyan" style="font-weight:700;">({formato_pesos(f_usd_nube_dyn * trm_actual)} COP)</span></div>
             </div>
             """, unsafe_allow_html=True)
             
@@ -716,7 +766,7 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
                 """, unsafe_allow_html=True)
 
     # --- DESCARGA DE RECIBO OFICIAL EN PDF ---
-    col_pdf1, col_pdf2 = st.columns([2.5, 1.5])
+    col_pdf1, col_pdf2, col_pdf3 = st.columns([1, 2.5, 1])
     with col_pdf2:
         try:
             pdf_bytes = generar_recibo_pdf(

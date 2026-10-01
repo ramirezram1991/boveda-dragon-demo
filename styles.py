@@ -719,9 +719,119 @@ div[data-testid="stSlider"] div[data-baseweb="slider"] ~ div div {{
 }}
 
 /* ================================================================== */
+/* 💳 CARD TITULAR AUDITADO Y BADGE ACTIVO EN MATRIZ (RESPONSIVO 4K)  */
+/* ================================================================== */
+.card-titular-auditado {{
+    background: linear-gradient(135deg, rgba(234, 88, 12, 0.12), rgba(15, 23, 42, 0.85));
+    border: 1px solid rgba(234, 88, 12, 0.4);
+    border-left: 4px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+}}
+.titular-info-left {{
+    min-width: 0;
+    flex: 1 1 auto;
+}}
+.titular-subtag {{
+    font-size: 0.72rem;
+    color: #94a3b8;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}}
+.titular-nombre {{
+    font-family: 'Teko', sans-serif;
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    color: #f8fafc;
+    line-height: 1.1;
+    text-transform: uppercase;
+    word-break: break-word;
+}}
+.titular-meta {{
+    color: #cbd5e1;
+    font-size: 0.88rem;
+    font-weight: 600;
+    word-break: break-word;
+}}
+.titular-badge-right {{
+    text-align: right;
+    flex-shrink: 0;
+}}
+.badge-activo-matriz {{
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: inline-block;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+}}
+
+/* Preview en vivo de distribución Fiducia / Nube */
+.distribucion-live-preview {{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(15,23,42,0.85);
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-top: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.92rem;
+    gap: 8px;
+    flex-wrap: wrap;
+}}
+.distribucion-item {{
+    word-break: break-word;
+}}
+.distribucion-sep {{
+    color: #64748b;
+}}
+
+/* ILUMINACIÓN NEÓN PARA COMPONENTES DE STREAMLIT */
+.glow-green {{
+    color: #10b981 !important;
+    text-shadow: 0 0 2px #ffffff, 0 0 8px #10b981, 0 0 18px #10b981, 0 0 32px rgba(16, 185, 129, 0.8) !important;
+}}
+.glow-cyan {{
+    color: #38bdf8 !important;
+    text-shadow: 0 0 2px #ffffff, 0 0 8px #38bdf8, 0 0 18px #0284c7, 0 0 32px rgba(56, 189, 248, 0.8) !important;
+}}
+.glow-orange {{
+    color: #f97316 !important;
+    text-shadow: 0 0 2px #ffffff, 0 0 8px #ea580c, 0 0 18px #f97316, 0 0 32px rgba(234, 88, 12, 0.8) !important;
+}}
+.glow-white {{
+    color: #ffffff !important;
+    text-shadow: 0 0 3px #ffffff, 0 0 10px rgba(255, 255, 255, 0.9), 0 0 20px rgba(234, 179, 8, 0.7) !important;
+}}
+.glow-red {{
+    color: #ef4444 !important;
+    text-shadow: 0 0 2px #ffffff, 0 0 8px #ef4444, 0 0 18px rgba(239, 68, 68, 0.85) !important;
+}}
+.glow-purple {{
+    color: #c084fc !important;
+    text-shadow: 0 0 2px #ffffff, 0 0 8px #c084fc, 0 0 18px #9333ea !important;
+}}
+
+/* ================================================================== */
 /* 📱 OPTIMIZACIÓN RESPONSIVA DEFINITIVA PARA SMARTPHONES / MÓVILES    */
 /* ================================================================== */
 @media (max-width: 768px) {{
+    html, body {{
+        -webkit-overflow-scrolling: touch !important;
+    }}
+
     .block-container,
     [data-testid="stMainBlockContainer"],
     [data-testid="stAppViewBlockContainer"],
@@ -731,6 +841,55 @@ div[data-testid="stSlider"] div[data-baseweb="slider"] ~ div div {{
         padding-left: 0.6rem !important;
         padding-right: 0.6rem !important;
         max-width: 100% !important;
+    }}
+
+    /* Card Titular en móvil se apila limpiamente para que ACTIVO EN MATRIZ nunca se corte */
+    .card-titular-auditado {{
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 12px 14px !important;
+        gap: 10px !important;
+    }}
+    .titular-nombre {{
+        font-size: 1.55rem !important;
+    }}
+    .titular-badge-right {{
+        text-align: left !important;
+        width: 100% !important;
+    }}
+    .badge-activo-matriz {{
+        font-size: 0.72rem !important;
+        padding: 5px 10px !important;
+        white-space: nowrap !important;
+    }}
+
+    /* Distribución en vivo en móvil */
+    .distribucion-live-preview {{
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 10px 12px !important;
+        gap: 6px !important;
+    }}
+    .distribucion-sep {{
+        display: none !important;
+    }}
+    .distribucion-item {{
+        font-size: 0.86rem !important;
+    }}
+
+    /* Botones de distribución rápida en móvil: se adaptan en grid 2x2 */
+    div[data-testid="stHorizontalBlock"] {{
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }}
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
+        min-width: 135px !important;
+        flex: 1 1 calc(50% - 8px) !important;
+    }}
+    div[data-testid="column"] button {{
+        font-size: 0.82rem !important;
+        padding: 0.45rem 0.4rem !important;
+        white-space: nowrap !important;
     }}
 
     [data-testid="stTabs"] [role="tablist"] {{
