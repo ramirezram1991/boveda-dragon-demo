@@ -416,8 +416,8 @@ elif st.session_state['vista_actual'] == 'registro':
                 st.markdown("<h2 class='font-teko' style='font-size:3rem; margin-top:0; text-align:center; color:white;'>VERIFICAR CÓDIGO OTP</h2>", unsafe_allow_html=True)
                 st.info(f"Ingresa el código enviado a: **{st.session_state['temp_data']['email']}**")
                 
-                # if st.session_state.get('codigo_otp_debug'):
-                    # st.caption(f"??"🔑 Código de prueba: **{st.session_state['codigo_otp_debug']}**")
+                if st.session_state.get('codigo_otp_debug'):
+                    st.success(f"?? [MODO DEMO] C�digo interceptado: {st.session_state['codigo_otp_debug']}")
                     
                 c_otp = st.text_input("Código de 6 dígitos")
                 st.markdown("<br>", unsafe_allow_html=True)
