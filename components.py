@@ -371,6 +371,73 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
         .tilt-card-unit {{ color: #94a3b8; font-size: 11px; white-space: nowrap; }}
         .tilt-card-right {{ text-align: right; flex-shrink: 0; }}
 
+        /* ILUMINACIÓN NEÓN SUPREMA Y BRILLO QUÁNTICO EN NÚMEROS (4K NEON GLOW) */
+        .glow-green {{
+            color: #10b981 !important;
+            text-shadow: 
+                0 0 2px #ffffff,
+                0 0 8px #10b981,
+                0 0 18px #10b981,
+                0 0 35px rgba(16, 185, 129, 0.8),
+                0 0 55px rgba(16, 185, 129, 0.45) !important;
+            animation: pulseGlowGreen 3.2s ease-in-out infinite alternate !important;
+        }}
+        @keyframes pulseGlowGreen {{
+            0% {{ text-shadow: 0 0 2px #fff, 0 0 8px #10b981, 0 0 18px #10b981, 0 0 32px rgba(16,185,129,0.7); }}
+            100% {{ text-shadow: 0 0 4px #fff, 0 0 14px #10b981, 0 0 28px #10b981, 0 0 52px rgba(16,185,129,0.95); }}
+        }}
+
+        .glow-orange {{
+            color: #f97316 !important;
+            text-shadow: 
+                0 0 2px #ffffff,
+                0 0 8px #ea580c,
+                0 0 18px #f97316,
+                0 0 35px rgba(234, 88, 12, 0.8),
+                0 0 55px rgba(234, 88, 12, 0.45) !important;
+            animation: pulseGlowOrange 3.2s ease-in-out infinite alternate !important;
+        }}
+        @keyframes pulseGlowOrange {{
+            0% {{ text-shadow: 0 0 2px #fff, 0 0 8px #ea580c, 0 0 18px #f97316, 0 0 32px rgba(234,88,12,0.7); }}
+            100% {{ text-shadow: 0 0 4px #fff, 0 0 14px #ea580c, 0 0 28px #f97316, 0 0 52px rgba(234,88,12,0.95); }}
+        }}
+
+        .glow-white {{
+            color: #ffffff !important;
+            text-shadow: 
+                0 0 3px #ffffff,
+                0 0 10px rgba(255, 255, 255, 0.9),
+                0 0 22px rgba(234, 179, 8, 0.7),
+                0 0 40px rgba(234, 88, 12, 0.45) !important;
+        }}
+
+        .glow-red {{
+            color: #ef4444 !important;
+            text-shadow: 
+                0 0 2px #ffffff,
+                0 0 8px #ef4444,
+                0 0 22px rgba(239, 68, 68, 0.85),
+                0 0 38px rgba(239, 68, 68, 0.45) !important;
+        }}
+
+        .glow-cyan {{
+            color: #38bdf8 !important;
+            text-shadow: 
+                0 0 2px #ffffff,
+                0 0 8px #38bdf8,
+                0 0 22px #0284c7,
+                0 0 38px rgba(56, 189, 248, 0.75) !important;
+        }}
+
+        .glow-purple {{
+            color: #c084fc !important;
+            text-shadow: 
+                0 0 2px #ffffff,
+                0 0 8px #c084fc,
+                0 0 22px #9333ea,
+                0 0 38px rgba(192, 132, 252, 0.75) !important;
+        }}
+
         /* AJUSTES RESPONSIVOS MÓVILES (IPHONE / ANDROID) */
         @media (max-width: 820px) {{
             .header-box {{ flex-direction: column; align-items: flex-start; padding: 12px 14px; gap: 8px; margin-bottom: 1.2rem; }}
@@ -414,19 +481,19 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
         <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-label">PAGO BRUTO (USD)</div>
-                <div id="kpi1" class="kpi-value num-anim secure-blur" title="Pase el cursor para desencriptar" data-val="{t_usd}" style="color: #f8fafc;">$ 0</div>
+                <div id="kpi1" class="kpi-value num-anim secure-blur glow-white" title="Pase el cursor para desencriptar" data-val="{t_usd}">$ 0</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">TOTAL NETO (-{pct_desc*100:.0f}%)</div>
-                <div id="kpi2" class="kpi-value num-anim secure-blur" title="Pase el cursor para desencriptar" data-val="{t_neto}" style="color: {T_ACT['accent']};">$ 0</div>
+                <div id="kpi2" class="kpi-value num-anim secure-blur glow-orange" title="Pase el cursor para desencriptar" data-val="{t_neto}">$ 0</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">COMISIÓN BANCO ({pct_banco*100:.0f}%)</div>
-                <div id="kpi3" class="kpi-value num-anim secure-blur" title="Pase el cursor para desencriptar" data-val="{b_usd}" style="color: #ef4444;">$ 0</div>
+                <div id="kpi3" class="kpi-value num-anim secure-blur glow-red" title="Pase el cursor para desencriptar" data-val="{b_usd}">$ 0</div>
             </div>
             <div class="kpi-card kpi-card-featured">
                 <div class="kpi-label">TOTAL FINAL (COP)</div>
-                <div id="kpi4" class="kpi-value num-anim secure-blur" title="Pase el cursor para desencriptar" data-val="{t_cop}" style="color: #10b981;">$ 0</div>
+                <div id="kpi4" class="kpi-value num-anim secure-blur glow-green" title="Pase el cursor para desencriptar" data-val="{t_cop}">$ 0</div>
             </div>
         </div>
 
@@ -440,23 +507,23 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
                 <h4 class="panel-title">ESTRUCTURA DE DESEMBOLSO</h4>
                 <div class="summary-row">
                     <span style="color:#94a3b8; font-weight:600;">TRM APLICADA EN VIVO</span>
-                    <span style="font-family:'Space Grotesk'; font-weight:700;">{formato_trm(trm_actual)}</span>
+                    <span class="glow-white" style="font-family:'Space Grotesk'; font-weight:700;">{formato_trm(trm_actual)}</span>
                 </div>
                 <div class="summary-row">
                     <span style="color:#ef4444; font-weight:600;">BANCO INICIAL (1%)</span>
-                    <span class="num-anim" data-val="{b_usd * trm_actual}" style="font-family:'Space Grotesk'; font-weight:700; color:#ef4444;">$ 0</span>
+                    <span class="num-anim glow-red" data-val="{b_usd * trm_actual}" style="font-family:'Space Grotesk'; font-weight:700;">$ 0</span>
                 </div>
                 <div class="summary-row">
                     <span style="color:#38bdf8; font-weight:600;">🏛️ FIDUCIA ASIGNADA ({pct_fid:.0f}%)</span>
-                    <span class="num-anim" data-val="{f_usd_fid * trm_actual}" style="font-family:'Space Grotesk'; font-weight:700; color:#38bdf8;">$ 0</span>
+                    <span class="num-anim glow-cyan" data-val="{f_usd_fid * trm_actual}" style="font-family:'Space Grotesk'; font-weight:700;">$ 0</span>
                 </div>
                 <div class="summary-row">
                     <span style="color:#a855f7; font-weight:600;">☁️ NUBE ASIGNADA ({pct_nube:.0f}%)</span>
-                    <span class="num-anim" data-val="{f_usd_nube * trm_actual}" style="font-family:'Space Grotesk'; font-weight:700; color:#a855f7;">$ 0</span>
+                    <span class="num-anim glow-purple" data-val="{f_usd_nube * trm_actual}" style="font-family:'Space Grotesk'; font-weight:700;">$ 0</span>
                 </div>
                 <div class="summary-row" style="border:none; margin-top:1.5rem;">
                     <span style="font-weight:800; font-size:1.1rem; color:white;">VALOR A DESEMBOLSAR</span>
-                    <span class="num-anim" data-val="{t_cop}" style="font-family:'Space Grotesk'; font-weight:800; font-size:1.8rem; color:#10b981;">$ 0</span>
+                    <span class="num-anim glow-green summary-total" data-val="{t_cop}" style="font-family:'Space Grotesk'; font-weight:800; font-size:1.8rem;">$ 0</span>
                 </div>
             </div>
         </div>
@@ -558,10 +625,10 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
             f_usd_nube_dyn = remanente_usd * (nuevo_pct_nube / 100.0)
             
             st.markdown(f"""
-            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.75); padding:10px 16px; border-radius:10px; border:1px solid rgba(255,255,255,0.08); margin-top:8px; font-family:'Space Grotesk', sans-serif; font-size:0.92rem;">
-                <div>🏛️ <strong style="color:#f8fafc;">Fiducia: {nuevo_pct_fid}%</strong> <span style="color:#10b981; font-weight:700;">({formato_pesos(f_usd_fid_dyn * trm_actual)} COP)</span></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.85); padding:10px 16px; border-radius:10px; border:1px solid rgba(255,255,255,0.08); margin-top:8px; font-family:'Space Grotesk', sans-serif; font-size:0.92rem;">
+                <div>🏛️ <strong style="color:#f8fafc;">Fiducia: {nuevo_pct_fid}%</strong> <span style="color:#10b981; font-weight:700; text-shadow:0 0 10px #10b981, 0 0 20px rgba(16,185,129,0.65);">({formato_pesos(f_usd_fid_dyn * trm_actual)} COP)</span></div>
                 <div style="color:#64748b;">•</div>
-                <div>☁️ <strong style="color:#f8fafc;">Nube: {nuevo_pct_nube}%</strong> <span style="color:#38bdf8; font-weight:700;">({formato_pesos(f_usd_nube_dyn * trm_actual)} COP)</span></div>
+                <div>☁️ <strong style="color:#f8fafc;">Nube: {nuevo_pct_nube}%</strong> <span style="color:#38bdf8; font-weight:700; text-shadow:0 0 10px #38bdf8, 0 0 20px rgba(56,189,248,0.65);">({formato_pesos(f_usd_nube_dyn * trm_actual)} COP)</span></div>
             </div>
             """, unsafe_allow_html=True)
             
