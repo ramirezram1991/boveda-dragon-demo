@@ -578,15 +578,13 @@ header[data-testid="stHeader"] {{
 .secure-blur {{
     filter: blur(8px) opacity(0.7);
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"><path d="M12 4.5C7 4.5 2.7 8.3 1 12c1.7 3.7 6 7.5 11 7.5s9.3-3.8 11-7.5c-1.7-3.7-6-7.5-11-7.5zm0 12c-2.5 0-4.5-2-4.5-4.5S9.5 7.5 12 7.5 16.5 9.5 16.5 12 14.5 16.5 12 16.5zm0-7.5c-1.7 0-3 1.3-3 3s1.3 3 3 3 3-1.3 3-3-1.3-3-3-3z"/></svg>') 12 12, pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     user-select: none;
     font-family: 'Space Grotesk', monospace;
-    text-shadow: 0 0 10px var(--accent);
 }}
 .secure-blur:hover, .secure-blur:active {{
     filter: blur(0) opacity(1);
-    color: var(--accent_glow) !important;
-    text-shadow: 0 0 15px rgba(234,88,12,0.8);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }}
 
 /* Radar de Auditoría */
@@ -798,30 +796,36 @@ div[data-testid="stSlider"] div[data-baseweb="slider"] ~ div div {{
     color: #64748b;
 }}
 
-/* ILUMINACIÓN NEÓN PARA COMPONENTES DE STREAMLIT */
+/* TIPOGRAFÍA FINANCIERA EJECUTIVA Y DE ALTO CONTRASTE (CERO NEÓN FOSFORESCENTE) */
 .glow-green {{
     color: #10b981 !important;
-    text-shadow: 0 0 2px #ffffff, 0 0 8px #10b981, 0 0 18px #10b981, 0 0 32px rgba(16, 185, 129, 0.8) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    font-variant-numeric: tabular-nums !important;
 }}
 .glow-cyan {{
     color: #38bdf8 !important;
-    text-shadow: 0 0 2px #ffffff, 0 0 8px #38bdf8, 0 0 18px #0284c7, 0 0 32px rgba(56, 189, 248, 0.8) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    font-variant-numeric: tabular-nums !important;
 }}
 .glow-orange {{
-    color: #f97316 !important;
-    text-shadow: 0 0 2px #ffffff, 0 0 8px #ea580c, 0 0 18px #f97316, 0 0 32px rgba(234, 88, 12, 0.8) !important;
+    color: #f59e0b !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    font-variant-numeric: tabular-nums !important;
 }}
 .glow-white {{
     color: #ffffff !important;
-    text-shadow: 0 0 3px #ffffff, 0 0 10px rgba(255, 255, 255, 0.9), 0 0 20px rgba(234, 179, 8, 0.7) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    font-variant-numeric: tabular-nums !important;
 }}
 .glow-red {{
-    color: #ef4444 !important;
-    text-shadow: 0 0 2px #ffffff, 0 0 8px #ef4444, 0 0 18px rgba(239, 68, 68, 0.85) !important;
+    color: #f87171 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    font-variant-numeric: tabular-nums !important;
 }}
 .glow-purple {{
     color: #c084fc !important;
-    text-shadow: 0 0 2px #ffffff, 0 0 8px #c084fc, 0 0 18px #9333ea !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+    font-variant-numeric: tabular-nums !important;
 }}
 
 /* ================================================================== */

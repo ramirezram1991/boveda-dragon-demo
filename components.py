@@ -327,16 +327,19 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
             monto_item = calc[k] * v['precio']
             filas_html += f"""
             <div class="tilt-card">
-                <div class="tilt-card-left">
-                    <span style="font-size:1.6rem; flex-shrink:0;">{v['icono']}</span>
-                    <div style="min-width:0;">
-                        <div class="tilt-card-name">{v['nombre']}</div>
-                        <div class="tilt-card-unit">Precio unitario: {formato_pesos(v['precio'])} USD</div>
+                <div class="tilt-card-header">
+                    <div class="tilt-card-title-group">
+                        <span class="tilt-card-icon">{v['icono']}</span>
+                        <span class="tilt-card-name">{v['nombre']}</span>
                     </div>
+                    <div class="tilt-card-badge">x{calc[k]}</div>
                 </div>
-                <div class="tilt-card-right">
-                    <div style="color:{T_ACT['accent']}; font-weight:800; font-family:'Space Grotesk', sans-serif; font-size:1.05rem;">x{calc[k]}</div>
-                    <div class="num-anim secure-blur glow-green" data-val="{monto_item}" title="Desencriptar" style="font-weight:800; font-family:'Space Grotesk', sans-serif; font-size:0.92rem; white-space:nowrap;">$ 0 USD</div>
+                <div class="tilt-card-body">
+                    <div class="tilt-card-unit">Precio unitario: <span>{formato_pesos(v['precio'])} USD</span></div>
+                    <div class="tilt-card-total-group">
+                        <span class="tilt-card-total-label">Subtotal:</span>
+                        <span class="num-anim secure-blur tilt-card-total-val" data-val="{monto_item}" title="Desencriptar">$ 0 USD</span>
+                    </div>
                 </div>
             </div>
             """
@@ -365,27 +368,114 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
         .panel-title {{ font-family: 'Teko', sans-serif; font-size: 1.85rem; margin: 0 0 1.1rem 0; text-transform: uppercase; color: #f8fafc; letter-spacing: 0.5px; }}
         .summary-row {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); gap: 8px; font-size: 0.92rem; }}
         
-        .tilt-card {{ display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(12,15,20,0.85); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; margin-bottom: 8px; gap: 10px; }}
-        .tilt-card-left {{ display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1 1 auto; }}
-        .tilt-card-name {{ font-weight: 700; font-size: 0.95rem; color: #f8fafc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }}
-        .tilt-card-unit {{ color: #94a3b8; font-size: 11px; white-space: nowrap; }}
-        .tilt-card-right {{ text-align: right; flex-shrink: 0; }}
+        /* TARJETA ESTRUCTURADA DE ACTIVOS (CERO COLISIONES DE PRECIO Y VALOR) */
+        .tilt-card {{
+            display: flex;
+            flex-direction: column;
+            padding: 12px 14px;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-left: 3px solid {T_ACT['accent']};
+            border-radius: 10px;
+            margin-bottom: 10px;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+            transition: all 0.25s ease;
+        }}
+        .tilt-card-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }}
+        .tilt-card-title-group {{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            flex: 1 1 auto;
+        }}
+        .tilt-card-icon {{
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }}
+        .tilt-card-name {{
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #f8fafc;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }}
+        .tilt-card-badge {{
+            background: rgba(234, 88, 12, 0.15);
+            color: {T_ACT['accent']};
+            border: 1px solid rgba(234, 88, 12, 0.35);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }}
+        .tilt-card-body {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 7px;
+            gap: 10px;
+        }}
+        .tilt-card-unit {{
+            color: #94a3b8;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }}
+        .tilt-card-unit span {{
+            color: #cbd5e1;
+            font-weight: 600;
+        }}
+        .tilt-card-total-group {{
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-align: right;
+            flex-shrink: 0;
+        }}
+        .tilt-card-total-label {{
+            font-size: 0.72rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 600;
+        }}
+        .tilt-card-total-val {{
+            color: #10b981;
+            font-weight: 800;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }}
 
-        /* CARD DESTACADA VALOR TOTAL A DESEMBOLSAR */
+        /* CARD DESTACADA VALOR TOTAL A DESEMBOLSAR (ESTILO BANCARIO EJECUTIVO) */
         .desembolso-destacado-card {{
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(12, 15, 20, 0.95));
-            border: 1px solid rgba(16, 185, 129, 0.45);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-left: 4px solid #10b981;
             border-radius: 12px;
             padding: 14px 18px;
             margin-top: 1.4rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), inset 0 0 16px rgba(16, 185, 129, 0.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             gap: 12px;
         }}
         .desembolso-destacado-label {{
-            font-size: 1.02rem;
+            font-size: 1rem;
             font-weight: 800;
             color: #f8fafc;
             letter-spacing: 0.5px;
@@ -398,73 +488,46 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
             font-size: clamp(1.2rem, 2.2vw, 1.75rem);
             text-align: right;
             white-space: nowrap;
+            color: #10b981;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+            font-variant-numeric: tabular-nums;
         }}
 
-        /* ILUMINACIÓN NEÓN SUPREMA Y BRILLO QUÁNTICO EN NÚMEROS (4K NEON GLOW) */
+        /* TIPOGRAFÍA FINANCIERA EJECUTIVA Y DE ALTO CONTRASTE (CERO NEÓN FOSFORESCENTE) */
         .glow-green {{
             color: #10b981 !important;
-            text-shadow: 
-                0 0 2px #ffffff,
-                0 0 8px #10b981,
-                0 0 18px #10b981,
-                0 0 35px rgba(16, 185, 129, 0.8),
-                0 0 55px rgba(16, 185, 129, 0.45) !important;
-            animation: pulseGlowGreen 3.2s ease-in-out infinite alternate !important;
-        }}
-        @keyframes pulseGlowGreen {{
-            0% {{ text-shadow: 0 0 2px #fff, 0 0 8px #10b981, 0 0 18px #10b981, 0 0 32px rgba(16,185,129,0.7); }}
-            100% {{ text-shadow: 0 0 4px #fff, 0 0 14px #10b981, 0 0 28px #10b981, 0 0 52px rgba(16,185,129,0.95); }}
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+            font-variant-numeric: tabular-nums !important;
         }}
 
         .glow-orange {{
-            color: #f97316 !important;
-            text-shadow: 
-                0 0 2px #ffffff,
-                0 0 8px #ea580c,
-                0 0 18px #f97316,
-                0 0 35px rgba(234, 88, 12, 0.8),
-                0 0 55px rgba(234, 88, 12, 0.45) !important;
-            animation: pulseGlowOrange 3.2s ease-in-out infinite alternate !important;
-        }}
-        @keyframes pulseGlowOrange {{
-            0% {{ text-shadow: 0 0 2px #fff, 0 0 8px #ea580c, 0 0 18px #f97316, 0 0 32px rgba(234,88,12,0.7); }}
-            100% {{ text-shadow: 0 0 4px #fff, 0 0 14px #ea580c, 0 0 28px #f97316, 0 0 52px rgba(234,88,12,0.95); }}
+            color: #f59e0b !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+            font-variant-numeric: tabular-nums !important;
         }}
 
         .glow-white {{
             color: #ffffff !important;
-            text-shadow: 
-                0 0 3px #ffffff,
-                0 0 10px rgba(255, 255, 255, 0.9),
-                0 0 22px rgba(234, 179, 8, 0.7),
-                0 0 40px rgba(234, 88, 12, 0.45) !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+            font-variant-numeric: tabular-nums !important;
         }}
 
         .glow-red {{
-            color: #ef4444 !important;
-            text-shadow: 
-                0 0 2px #ffffff,
-                0 0 8px #ef4444,
-                0 0 22px rgba(239, 68, 68, 0.85),
-                0 0 38px rgba(239, 68, 68, 0.45) !important;
+            color: #f87171 !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+            font-variant-numeric: tabular-nums !important;
         }}
 
         .glow-cyan {{
             color: #38bdf8 !important;
-            text-shadow: 
-                0 0 2px #ffffff,
-                0 0 8px #38bdf8,
-                0 0 22px #0284c7,
-                0 0 38px rgba(56, 189, 248, 0.75) !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+            font-variant-numeric: tabular-nums !important;
         }}
 
         .glow-purple {{
             color: #c084fc !important;
-            text-shadow: 
-                0 0 2px #ffffff,
-                0 0 8px #c084fc,
-                0 0 22px #9333ea,
-                0 0 38px rgba(192, 132, 252, 0.75) !important;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+            font-variant-numeric: tabular-nums !important;
         }}
 
         /* AJUSTES RESPONSIVOS MÓVILES (IPHONE / ANDROID) */
@@ -478,16 +541,38 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
             .kpi-value {{ font-size: clamp(0.85rem, 3.2vw, 1.15rem) !important; }}
             
             /* KPI 4 destacado a lo ancho en móvil para que los 14 dígitos del Total COP no se corten */
-            .kpi-card-featured {{ grid-column: span 2 !important; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(12, 15, 20, 0.95)) !important; border-color: rgba(16, 185, 129, 0.45) !important; padding: 0.85rem !important; }}
+            .kpi-card-featured {{ grid-column: span 2 !important; background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(12, 15, 20, 0.95)) !important; border-color: rgba(16, 185, 129, 0.4) !important; padding: 0.85rem !important; }}
             .kpi-card-featured .kpi-value {{ font-size: clamp(1.2rem, 4.8vw, 1.65rem) !important; }}
             
             .main-grid {{ grid-template-columns: 1fr !important; gap: 1.2rem !important; }}
             .panel {{ padding: 1rem 0.85rem !important; border-radius: 12px !important; }}
             .panel-title {{ font-size: 1.55rem !important; margin-bottom: 0.8rem !important; }}
             
-            .tilt-card {{ padding: 8px 10px !important; }}
-            .tilt-card-name {{ font-size: 0.86rem !important; }}
-            .tilt-card-unit {{ font-size: 10px !important; }}
+            .tilt-card {{
+                padding: 10px 12px !important;
+                gap: 6px !important;
+            }}
+            .tilt-card-name {{
+                font-size: 0.88rem !important;
+            }}
+            .tilt-card-body {{
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 4px !important;
+            }}
+            .tilt-card-unit {{
+                font-size: 0.76rem !important;
+                width: 100% !important;
+            }}
+            .tilt-card-total-group {{
+                width: 100% !important;
+                justify-content: space-between !important;
+                border-top: 1px dashed rgba(255, 255, 255, 0.08) !important;
+                padding-top: 4px !important;
+            }}
+            .tilt-card-total-val {{
+                font-size: 0.92rem !important;
+            }}
             
             .summary-row {{ padding-bottom: 6px !important; margin-bottom: 7px !important; font-size: 0.82rem !important; flex-wrap: wrap !important; gap: 4px !important; }}
             
@@ -600,7 +685,7 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
             }});
             card.addEventListener('mouseleave', () => {{
                 card.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) translateY(0)';
-                card.style.boxShadow = 'none';
+                card.style.boxShadow = '';
             }});
         }});
 
