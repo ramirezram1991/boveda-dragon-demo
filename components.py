@@ -90,10 +90,177 @@ def render_advertencia_forense():
 
 
 # ==============================================================================
-# 7. REPORTE OFICIAL PDF REPORTLAB (NATIVO CON QR Y SELLO HMAC)
+# CIRCUITO NEURAL CIBERNÉTICO ESTILO JARVIS (CANVAS FORENSE DE ALTA TECNOLOGÍA)
 # ==============================================================================
+def render_circuito_neural_jarvis():
+    components.html('''
+    <script>
+    let oldLanding = window.parent.document.getElementById('dragon-canvas');
+    if (oldLanding) { oldLanding.remove(); }
+
+    let oldJarvis = window.parent.document.getElementById('jarvis-neural-canvas');
+    if (oldJarvis) { oldJarvis.remove(); }
+
+    const canvas = window.parent.document.createElement('canvas');
+    canvas.id = 'jarvis-neural-canvas';
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100vw';
+    canvas.style.height = '100vh';
+    canvas.style.zIndex = '0';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.opacity = '0.72';
+    window.parent.document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+        canvas.width = window.parent.innerWidth;
+        canvas.height = window.parent.innerHeight;
+    }
+    resize();
+    window.parent.addEventListener('resize', resize);
+
+    let mouse = { x: null, y: null, maxDist: 150 };
+    window.parent.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+    window.parent.addEventListener('mouseleave', () => {
+        mouse.x = null;
+        mouse.y = null;
+    });
+
+    const NODE_COUNT = Math.min(80, Math.floor((canvas.width * canvas.height) / 14000));
+    const nodes = [];
+    for (let i = 0; i < NODE_COUNT; i++) {
+        nodes.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.85,
+            vy: (Math.random() - 0.5) * 0.85,
+            radius: Math.random() * 2.2 + 1.2,
+            pulseSpeed: Math.random() * 0.04 + 0.02,
+            pulseOffset: Math.random() * Math.PI * 2,
+            colorType: Math.random() > 0.35 ? 'gold' : 'cyan'
+        });
+    }
+
+    const packets = [];
+    for (let i = 0; i < 18; i++) {
+        packets.push({
+            from: Math.floor(Math.random() * NODE_COUNT),
+            to: Math.floor(Math.random() * NODE_COUNT),
+            progress: Math.random(),
+            speed: Math.random() * 0.015 + 0.008
+        });
+    }
+
+    let tick = 0;
+    function animate() {
+        if (!window.parent.document.getElementById('jarvis-neural-canvas')) return;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        tick += 0.012;
+        
+        nodes.forEach((n) => {
+            n.x += n.vx;
+            n.y += n.vy;
+            
+            if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+            if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+            
+            if (mouse.x !== null) {
+                let dx = mouse.x - n.x;
+                let dy = mouse.y - n.y;
+                let d = Math.sqrt(dx * dx + dy * dy);
+                if (d < mouse.maxDist) {
+                    let force = (mouse.maxDist - d) / mouse.maxDist;
+                    n.x -= (dx / d) * force * 1.5;
+                    n.y -= (dy / d) * force * 1.5;
+                }
+            }
+            
+            let pulse = Math.sin(tick * 3 + n.pulseOffset) * 0.5 + 0.5;
+            let r = n.radius + pulse * 1.3;
+            let isGold = n.colorType === 'gold';
+            let mainColor = isGold ? `rgba(234, 179, 8, ${0.55 + pulse * 0.4})` : `rgba(0, 210, 255, ${0.55 + pulse * 0.4})`;
+            let glowColor = isGold ? `rgba(234, 88, 12, ${0.28 + pulse * 0.3})` : `rgba(56, 189, 248, ${0.28 + pulse * 0.3})`;
+            
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, r * 2.8, 0, Math.PI * 2);
+            ctx.fillStyle = glowColor;
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+            ctx.fillStyle = mainColor;
+            ctx.fill();
+        });
+        
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                let dx = nodes[i].x - nodes[j].x;
+                let dy = nodes[i].y - nodes[j].y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < 115) {
+                    let alpha = (1 - dist / 115) * 0.28;
+                    let stroke = (nodes[i].colorType === 'gold' && nodes[j].colorType === 'gold')
+                        ? `rgba(234, 179, 8, ${alpha})`
+                        : `rgba(0, 210, 255, ${alpha * 0.9})`;
+                    ctx.beginPath();
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.strokeStyle = stroke;
+                    ctx.lineWidth = 0.9;
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        packets.forEach(p => {
+            let n1 = nodes[p.from];
+            let n2 = nodes[p.to];
+            if (n1 && n2) {
+                let dx = n2.x - n1.x;
+                let dy = n2.y - n1.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 140) {
+                    p.progress += p.speed;
+                    if (p.progress > 1) {
+                        p.progress = 0;
+                        p.from = Math.floor(Math.random() * nodes.length);
+                        p.to = Math.floor(Math.random() * nodes.length);
+                    }
+                    let px = n1.x + dx * p.progress;
+                    let py = n1.y + dy * p.progress;
+                    
+                    ctx.beginPath();
+                    ctx.arc(px, py, 2.2, 0, Math.PI * 2);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowColor = '#00d2ff';
+                    ctx.shadowBlur = 8;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                } else {
+                    p.from = Math.floor(Math.random() * nodes.length);
+                    p.to = Math.floor(Math.random() * nodes.length);
+                    p.progress = 0;
+                }
+            }
+        });
+        
+        window.parent.requestAnimationFrame(animate);
+    }
+    animate();
+    </script>
+    ''', height=0)
+
 
 def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
+    render_circuito_neural_jarvis()
     tema_actual = st.session_state.get('tema_actual', 'cyber_dragon')
     T_ACT = TEMA_COLOR.get(tema_actual, TEMA_COLOR['cyber_dragon'])
     u_data = df_bd[df_bd['ID/CC/DNI'] == str(cedula)]
@@ -319,27 +486,62 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
     altura_dinamica = max(820, 520 + (cant_items * 88))
     components.html(html_content, height=altura_dinamica, scrolling=True)
 
-    # --- CONTROL DE FIDUCIA VS NUBE PARA EL CLIENTE ---
+    # --- CONTROL DE FIDUCIA VS NUBE PARA EL CLIENTE (SELECTOR TÁCTICO OPCIÓN 1) ---
     st.markdown("<br>", unsafe_allow_html=True)
     with st.container():
         st.markdown("<div class='card-custom'>", unsafe_allow_html=True)
         st.markdown("<h4 class='font-teko' style='font-size:1.8rem; margin-top:0; color:white;'>⚙️ TU PREFERENCIA DE DESEMBOLSO (REMANENTE 99%)</h4>", unsafe_allow_html=True)
         st.caption("Elige libremente qué porcentaje deseas recibir a través de Fiducia Bancaria y cuánto a través de la Nube.")
         
-        col_sl1, col_sl2 = st.columns([3, 1])
-        with col_sl1:
-            nuevo_pct_fid = st.slider("Porcentaje para Fiducia:", 0, 100, int(pct_fid), 5, key="slider_fid")
+        key_fid_state = f"pct_fid_{cedula}"
+        if key_fid_state not in st.session_state:
+            st.session_state[key_fid_state] = int(pct_fid)
+
+        st.markdown("<p style='color:#94a3b8; font-size:0.88rem; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;'>Selección rápida de 1 clic:</p>", unsafe_allow_html=True)
+        b_col1, b_col2, b_col3, b_col4 = st.columns(4)
+        with b_col1:
+            if st.button("🏛️ 100% Fiducia", use_container_width=True, key=f"btn_100_{cedula}"):
+                st.session_state[key_fid_state] = 100
+                st.rerun()
+        with b_col2:
+            if st.button("🏛️ 80% / ☁️ 20%", use_container_width=True, key=f"btn_80_{cedula}"):
+                st.session_state[key_fid_state] = 80
+                st.rerun()
+        with b_col3:
+            if st.button("⚖️ 50% / ☁️ 50%", use_container_width=True, key=f"btn_50_{cedula}"):
+                st.session_state[key_fid_state] = 50
+                st.rerun()
+        with b_col4:
+            if st.button("☁️ 100% Nube", use_container_width=True, key=f"btn_0_{cedula}"):
+                st.session_state[key_fid_state] = 0
+                st.rerun()
+
+        st.markdown("<div style='margin-top:12px;'></div>", unsafe_allow_html=True)
+        c_num1, c_num2 = st.columns([2.5, 1.2])
+        with c_num1:
+            val_actual = int(st.session_state[key_fid_state])
+            nuevo_pct_fid = st.number_input(
+                "O ajusta el % exacto para Fiducia Bancaria:",
+                min_value=0, max_value=100, value=val_actual, step=5,
+                key=f"num_input_{cedula}"
+            )
+            st.session_state[key_fid_state] = nuevo_pct_fid
             nuevo_pct_nube = 100 - nuevo_pct_fid
+            
+            f_usd_fid_dyn = remanente_usd * (nuevo_pct_fid / 100.0)
+            f_usd_nube_dyn = remanente_usd * (nuevo_pct_nube / 100.0)
+            
             st.markdown(f"""
-            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.35); padding:8px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); margin-top:6px; font-family:'Space Grotesk', sans-serif; font-size:0.88rem;">
-                <div>🏛️ <strong style="color:#f8fafc;">Fiducia: {nuevo_pct_fid}%</strong> <span style="color:#10b981; font-weight:700;">({formato_pesos(f_usd_fid * trm_actual)} COP)</span></div>
-                <div style="color:#64748b;">|</div>
-                <div>☁️ <strong style="color:#f8fafc;">Nube: {nuevo_pct_nube}%</strong> <span style="color:#38bdf8; font-weight:700;">({formato_pesos(f_usd_nube * trm_actual)} COP)</span></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.75); padding:10px 16px; border-radius:10px; border:1px solid rgba(255,255,255,0.08); margin-top:8px; font-family:'Space Grotesk', sans-serif; font-size:0.92rem;">
+                <div>🏛️ <strong style="color:#f8fafc;">Fiducia: {nuevo_pct_fid}%</strong> <span style="color:#10b981; font-weight:700;">({formato_pesos(f_usd_fid_dyn * trm_actual)} COP)</span></div>
+                <div style="color:#64748b;">•</div>
+                <div>☁️ <strong style="color:#f8fafc;">Nube: {nuevo_pct_nube}%</strong> <span style="color:#38bdf8; font-weight:700;">({formato_pesos(f_usd_nube_dyn * trm_actual)} COP)</span></div>
             </div>
             """, unsafe_allow_html=True)
-        with col_sl2:
-            st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("💾 Guardar Mi Preferencia", type="primary", use_container_width=True):
+            
+        with c_num2:
+            st.markdown("<div style='height:28px;'></div>", unsafe_allow_html=True)
+            if st.button("💾 Guardar Mi Preferencia", type="primary", use_container_width=True, key=f"btn_save_{cedula}"):
                 guardar_preferencia_usuario(cedula, nuevo_pct_fid, nuevo_pct_nube)
                 registrar_auditoria(cedula, "CAMBIO_DISTRIBUCION_FIDUCIA_NUBE", f"Fiducia:{nuevo_pct_fid}% Nube:{nuevo_pct_nube}%")
                 st.success("✅ Tu distribución ha sido guardada y tu recibo actualizado.")
