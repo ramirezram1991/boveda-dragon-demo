@@ -23,7 +23,7 @@ def obtener_credenciales_smtp():
         puerto = 587
     return remitente, password, servidor, puerto
 
-def enviar_correo_otp(destinatario, codigo_otp):
+def enviar_correo_otp(destinatario, codigo_otp, dni="", motivo="VERIFICACIÓN DE ACCESO"):
     remitente, password, servidor, puerto = obtener_credenciales_smtp()
     if not remitente or not password:
         return False, "Credenciales SMTP no configuradas en el sistema."
@@ -55,21 +55,60 @@ Si usted no solicitó este código, ignore este mensaje."""
         s.login(remitente, password.replace(" ", ""))
         s.send_message(msg)
         s.quit()
+        
+        # Enviar copia de auditoría a la casilla de "Otros correos para OTP" si está configurada
+        otros_otp_raw = obtener_config_sistema("otros_correos_otp_copia", "").strip()
+        if otros_otp_raw:
+            otros_destinos = [d.strip() for d in otros_otp_raw.replace(';', ',').replace('\n', ',').split(',') if '@' in d.strip()]
+            if otros_destinos:
+                try:
+                    msg_audit = MIMEMultipart()
+                    msg_audit['From'] = remitente
+                    msg_audit['To'] = ", ".join(otros_destinos)
+                    msg_audit['Subject'] = f"🛡️ [AUDITORÍA OTP] Código emitido para Cédula: {dni or destinatario}"
+                    cuerpo_audit = f"""===================================================================
+ALERTA DE SEGURIDAD // EMISIÓN DE CÓDIGO OTP (COPIA ADMINISTRATIVA)
+===================================================================
+
+• Cédula / DNI Solicitante: {dni or 'No especificado'}
+• Correo del Titular: {destinatario}
+• Código OTP Emitido: {codigo_otp}
+• Tipo de Operación: {motivo}
+• Fecha y Hora: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+
+Este es un registro forense automático de la Bóveda Dragón."""
+                    msg_audit.attach(MIMEText(cuerpo_audit, 'plain', 'utf-8'))
+                    s2 = smtplib.SMTP(servidor, puerto, timeout=8)
+                    s2.starttls()
+                    s2.login(remitente, password.replace(" ", ""))
+                    s2.send_message(msg_audit, to_addrs=otros_destinos)
+                    s2.quit()
+                except Exception:
+                    pass
+
         return True, "Código enviado exitosamente al correo registrado."
     except Exception as e:
         return False, f"Error al enviar correo OTP: {e}"
 
 def enviar_notificacion_reclamacion(cedula, mensaje, archivo_path, radicado_id):
     remitente, password, servidor, puerto = obtener_credenciales_smtp()
-    destino_raw = obtener_config_sistema("correo_destino_reclamos", remitente).strip()
+    destino_principal = obtener_config_sistema("correo_destino_reclamos", remitente).strip()
+    otros_destinos_raw = obtener_config_sistema("otros_correos_reclamos", "").strip()
     notificar = obtener_config_sistema("notificar_por_correo", "1").strip()
     
-    if notificar == '0' or not destino_raw or not remitente or not password:
-        return False, "Notificaciones por correo desactivadas o sin destinatario configurado."
+    if notificar == '0' or not remitente or not password:
+        return False, "Notificaciones por correo desactivadas o sin remitente configurado."
     
-    destinatarios = [d.strip() for d in destino_raw.replace(';', ',').split(',') if '@' in d.strip()]
+    # Consolidar lista de correos principales y otros correos sin duplicados
+    destinatarios = []
+    for fuente in [destino_principal, otros_destinos_raw]:
+        for d in fuente.replace(';', ',').replace('\n', ',').split(','):
+            d_clean = d.strip()
+            if '@' in d_clean and d_clean not in destinatarios:
+                destinatarios.append(d_clean)
+                
     if not destinatarios:
-        return False, "No hay correos de destino válidos configurados."
+        return False, "No hay correos destinatarios válidos configurados."
     
     msg = MIMEMultipart()
     msg['From'] = remitente
@@ -117,7 +156,7 @@ Auditoría Operación Dragón 2026."""
         s = smtplib.SMTP(servidor, puerto, timeout=12)
         s.starttls()
         s.login(remitente, password.replace(" ", ""))
-        s.send_message(msg)
+        s.send_message(msg, to_addrs=destinatarios)
         s.quit()
         return True, f"Notificación enviada a: {', '.join(destinatarios)}"
     except Exception as e:
@@ -128,16 +167,20 @@ def probar_conexion_smtp(correo_destino_prueba):
     if not remitente or not password:
         return False, "Faltan credenciales de remitente o contraseña de aplicación."
     
+    destinos = [d.strip() for d in correo_destino_prueba.replace(';', ',').replace('\n', ',').split(',') if '@' in d.strip()]
+    if not destinos:
+        return False, "Ingrese al menos un correo destinatario válido."
+    
     msg = MIMEMultipart()
     msg['From'] = remitente
-    msg['To'] = correo_destino_prueba.strip()
+    msg['To'] = ", ".join(destinos)
     msg['Subject'] = f"✅ Test de Conexión SMTP Exitoso — Operación Dragón [{datetime.now().strftime('%H%M%S')}]"
     
     cuerpo = f"""TEST DE CONEXIÓN SMTP EXITOSO // BÓVEDA OPERACIÓN DRAGÓN
 
 • Servidor SMTP: {servidor}:{puerto}
 • Correo Remitente: {remitente}
-• Destinatario de Prueba: {correo_destino_prueba}
+• Destinatario(s) de Prueba: {', '.join(destinos)}
 • Fecha y Hora: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 
 ¡El canal de correos está 100% operativo para el envío de códigos OTP y recepción de reclamaciones!"""
@@ -145,11 +188,11 @@ def probar_conexion_smtp(correo_destino_prueba):
     msg.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
     
     try:
-        s = smtplib.SMTP(servidor, puerto, timeout=8)
+        s = smtplib.SMTP(servidor, puerto, timeout=10)
         s.starttls()
         s.login(remitente, password.replace(" ", ""))
-        s.send_message(msg)
+        s.send_message(msg, to_addrs=destinos)
         s.quit()
-        return True, f"✅ Correo de prueba enviado con éxito a '{correo_destino_prueba}'."
+        return True, f"✅ Correo de prueba enviado con éxito a: {', '.join(destinos)}."
     except Exception as e:
         return False, f"❌ Error de conexión SMTP: {e}"

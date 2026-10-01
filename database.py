@@ -151,6 +151,8 @@ def init_db():
         conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('servidor_smtp', 'smtp.gmail.com'))
         conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('puerto_smtp', '587'))
         conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('correo_destino_reclamos', 'personaldramirez@gmail.com'))
+        conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('otros_correos_reclamos', ''))
+        conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('otros_correos_otp_copia', ''))
         conn.execute('INSERT OR IGNORE INTO configuraciones_sistema (clave, valor) VALUES (?, ?)', ('notificar_por_correo', '1'))
 
         # Insertar parámetros iniciales por defecto

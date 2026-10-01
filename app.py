@@ -265,7 +265,7 @@ elif st.session_state['vista_actual'] in ['login', 'recuperar']:
                         cuerpo = f"OPERACIÓN DRAGÓN\n\nSu PIN temporal de rescate es: {pin_temporal}\nUse este PIN como contraseña para acceder y luego cámbiela."
                         
                         with st.spinner("Enviando rescate..."):
-                            exito, msj_envio = enviar_correo_otp(rec_email, pin_temporal)
+                            exito, msj_envio = enviar_correo_otp(rec_email, pin_temporal, dni=rec_dni, motivo="RECUPERACIÓN DE CLAVE / RESCATE")
                         
                         salt = bcrypt.gensalt(12)
                         pass_hash = bcrypt.hashpw(pin_temporal.encode(), salt).decode()
@@ -389,7 +389,7 @@ elif st.session_state['vista_actual'] == 'registro':
                             codigo_otp = str(random.randint(100000, 999999))
                             st.session_state['codigo_otp_debug'] = codigo_otp
                             with st.spinner("Enviando código de seguridad OTP..."):
-                                exito, msj_envio = enviar_correo_otp(e_reg, codigo_otp)
+                                exito, msj_envio = enviar_correo_otp(e_reg, codigo_otp, dni=cd, motivo="REGISTRO DE NUEVA CUENTA")
                                 if exito:
                                     st.toast("SMTP exitoso: Código enviado al correo.", icon="✉️")
                             
@@ -641,6 +641,15 @@ elif st.session_state['vista_actual'] == 'dashboard':
                     key="input_cfg_rem_pass"
                 )
                 
+                cfg_otros_otp = st.text_area(
+                    "📋 Otros correos para copia y supervisión de OTP (opcional):",
+                    value=obtener_config_sistema("otros_correos_otp_copia", ""),
+                    placeholder="auditoria@correo.com, gerencia@correo.com\nseguridad@correo.com",
+                    help="Ingrese múltiples correos separados por coma (,) o saltos de línea. Cada vez que el sistema genere un OTP o PIN de rescate, estos correos recibirán una copia forense en tiempo real.",
+                    key="input_cfg_otros_otp",
+                    height=80
+                )
+                
                 with st.expander("⚙️ Parámetros Técnicos del Servidor SMTP"):
                     cfg_smtp_server = st.text_input("Host del Servidor SMTP:", value=obtener_config_sistema("servidor_smtp", "smtp.gmail.com"), key="input_cfg_smtp_server")
                     cfg_smtp_port = st.text_input("Puerto SMTP:", value=obtener_config_sistema("puerto_smtp", "587"), key="input_cfg_smtp_port")
@@ -649,26 +658,35 @@ elif st.session_state['vista_actual'] == 'dashboard':
             with c_cor2:
                 st.markdown("<div class='card-custom'>", unsafe_allow_html=True)
                 st.markdown("<h5 class='font-teko' style='font-size:1.35rem; color:#f8fafc; margin-top:0;'>📥 CASILLA DESTINATARIO PARA RECIBIR RECLAMACIONES</h5>", unsafe_allow_html=True)
-                st.markdown("<p style='color:#94a3b8; font-size:0.85rem;'>A esta cuenta de correo llegarán las alertas inmediatas con las imágenes, fotos y vouchers adjuntos que suban los clientes.</p>", unsafe_allow_html=True)
+                st.markdown("<p style='color:#94a3b8; font-size:0.85rem;'>A esta cuenta de correo principal llegarán las alertas inmediatas con las imágenes, fotos y vouchers adjuntos que suban los clientes.</p>", unsafe_allow_html=True)
                 
                 cfg_dest_reclamos = st.text_input(
-                    "Correo(s) para recibir comprobantes y vouchers:",
+                    "Correo principal de destino (reclamaciones y vouchers):",
                     value=obtener_config_sistema("correo_destino_reclamos", "personaldramirez@gmail.com"),
-                    placeholder="auditoria@bovedadragon.com, administracion@...",
-                    help="Puede ingresar uno o varios correos separados por coma (,)",
+                    placeholder="auditoria@bovedadragon.com",
+                    help="Buzón primario donde se reciben y archivan las evidencias",
                     key="input_cfg_dest_reclamos"
+                )
+                
+                cfg_otros_reclamos = st.text_area(
+                    "📋 Otros correos para reclamaciones (recibirán fotos y vouchers):",
+                    value=obtener_config_sistema("otros_correos_reclamos", ""),
+                    placeholder="reclamos2@correo.com, soporte@correo.com\ncontabilidad@correo.com",
+                    help="Ingrese varios correos separados por comas (,) o saltos de línea. Todos ellos recibirán simultáneamente las notificaciones con las fotos o archivos adjuntos.",
+                    key="input_cfg_otros_reclamos",
+                    height=80
                 )
                 
                 cfg_notif_activa = st.checkbox(
                     "Reenviar automáticamente cada soporte con imagen adjunta",
                     value=(obtener_config_sistema("notificar_por_correo", "1") == "1"),
-                    help="Si está activo, cada vez que un usuario envíe un reclamo con foto o PDF, el archivo se enviará como adjunto al correo receptor.",
+                    help="Si está activo, cada vez que un usuario envíe un reclamo con foto o PDF, el archivo se enviará como adjunto a todos los correos receptores.",
                     key="input_cfg_notif_activa"
                 )
                 
                 st.markdown("""
                 <div style='background:rgba(56, 189, 248, 0.08); border-left:3px solid #38bdf8; padding:8px 12px; border-radius:6px; margin-top:14px; font-size:0.82rem; color:#cbd5e1;'>
-                    ℹ️ <strong>Adjuntos Automáticos:</strong> Las fotos de comprobantes (JPG, PNG, WEBP) o documentos PDF se envían adjuntos en alta calidad directamente al correo configurado.
+                    ℹ️ <strong>Multidestino y Adjuntos:</strong> El sistema enviará el correo con la evidencia adjunta al correo principal y a todos los que agregue en la casilla de otros correos sin límite.
                 </div>
                 """, unsafe_allow_html=True)
                 st.markdown("</div>", unsafe_allow_html=True)
@@ -679,17 +697,19 @@ elif st.session_state['vista_actual'] == 'dashboard':
                 if st.button("💾 Guardar Configuración de Canales de Correo", type="primary", use_container_width=True, key="btn_save_correo_cfg"):
                     guardar_config_sistema("correo_remitente_otp", cfg_rem_email)
                     guardar_config_sistema("password_remitente_otp", cfg_rem_pass)
+                    guardar_config_sistema("otros_correos_otp_copia", cfg_otros_otp)
                     guardar_config_sistema("servidor_smtp", cfg_smtp_server)
                     guardar_config_sistema("puerto_smtp", cfg_smtp_port)
                     guardar_config_sistema("correo_destino_reclamos", cfg_dest_reclamos)
+                    guardar_config_sistema("otros_correos_reclamos", cfg_otros_reclamos)
                     guardar_config_sistema("notificar_por_correo", "1" if cfg_notif_activa else "0")
-                    registrar_auditoria("ADMIN", "CAMBIO_CONFIG_CORREOS", f"Remitente:{cfg_rem_email} | DestinoReclamos:{cfg_dest_reclamos}")
+                    registrar_auditoria("ADMIN", "CAMBIO_CONFIG_CORREOS", f"Remitente:{cfg_rem_email} | Destinos:{cfg_dest_reclamos} + Otros")
                     st.success("✅ Configuración de correos guardada exitosamente.")
                     st.rerun()
 
             with col_save_c2:
                 with st.popover("🧪 Probar Conexión SMTP"):
-                    test_email_target = st.text_input("Enviar correo de prueba a:", value=cfg_dest_reclamos.split(',')[0].strip(), key="input_test_email")
+                    test_email_target = st.text_input("Enviar correo de prueba a (uno o varios separados por coma):", value=cfg_dest_reclamos.split(',')[0].strip() if cfg_dest_reclamos else cfg_rem_email, key="input_test_email")
                     if st.button("Enviar Prueba Ahora", type="secondary", use_container_width=True, key="btn_send_test_email"):
                         with st.spinner("Enviando correo de prueba..."):
                             ok, msj_test = probar_conexion_smtp(test_email_target)
