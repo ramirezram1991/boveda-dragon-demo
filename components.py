@@ -330,7 +330,13 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
         with col_sl1:
             nuevo_pct_fid = st.slider("Porcentaje para Fiducia:", 0, 100, int(pct_fid), 5, key="slider_fid")
             nuevo_pct_nube = 100 - nuevo_pct_fid
-            st.markdown(f"🏛️ **Fiducia: {nuevo_pct_fid}%** ( {formato_pesos(f_usd_fid * trm_actual)} COP )  |  ☁️ **Nube: {nuevo_pct_nube}%** ( {formato_pesos(f_usd_nube * trm_actual)} COP )")
+            st.markdown(f"""
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.35); padding:8px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); margin-top:6px; font-family:'Space Grotesk', sans-serif; font-size:0.88rem;">
+                <div>🏛️ <strong style="color:#f8fafc;">Fiducia: {nuevo_pct_fid}%</strong> <span style="color:#10b981; font-weight:700;">({formato_pesos(f_usd_fid * trm_actual)} COP)</span></div>
+                <div style="color:#64748b;">|</div>
+                <div>☁️ <strong style="color:#f8fafc;">Nube: {nuevo_pct_nube}%</strong> <span style="color:#38bdf8; font-weight:700;">({formato_pesos(f_usd_nube * trm_actual)} COP)</span></div>
+            </div>
+            """, unsafe_allow_html=True)
         with col_sl2:
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("💾 Guardar Mi Preferencia", type="primary", use_container_width=True):

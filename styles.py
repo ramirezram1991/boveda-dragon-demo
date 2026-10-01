@@ -644,6 +644,80 @@ body, .stApp {{
     opacity: 0.8;
 }}
 
+/* ================================================================== */
+/* 🎚️ ESTILIZACIÓN PREMIUM DE LA BARRA SLIDER (FIDUCIA / NUBE)        */
+/* ================================================================== */
+div[data-testid="stSlider"] {{
+    background: rgba(15, 23, 42, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
+    padding: 14px 18px 16px 18px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    margin-bottom: 12px !important;
+}}
+
+div[data-testid="stSlider"] label {{
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #f8fafc !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
+    margin-bottom: 6px !important;
+}}
+
+/* Carril / Pista de la barra */
+div[data-testid="stSlider"] div[data-baseweb="slider"] {{
+    padding: 12px 0 !important;
+}}
+
+div[data-testid="stSlider"] div[data-baseweb="slider"] > div {{
+    height: 8px !important;
+    border-radius: 9999px !important;
+    background: rgba(39, 44, 53, 0.9) !important;
+}}
+
+/* Barra llena (progreso activo) */
+div[data-testid="stSlider"] div[data-baseweb="slider"] > div > div:first-child {{
+    background: linear-gradient(90deg, #ea580c 0%, #f97316 70%, #38bdf8 100%) !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 0 14px rgba(234, 88, 12, 0.75) !important;
+}}
+
+/* Perilla circular moderna con resplandor neón */
+div[data-testid="stSlider"] div[role="slider"] {{
+    width: 22px !important;
+    height: 22px !important;
+    background: radial-gradient(circle, #ffffff 30%, #ea580c 100%) !important;
+    border: 2px solid #ffffff !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 16px #ea580c, 0 2px 8px rgba(0,0,0,0.6) !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    cursor: pointer !important;
+}}
+
+div[data-testid="stSlider"] div[role="slider"]:hover {{
+    transform: scale(1.25) !important;
+    box-shadow: 0 0 24px #ea580c, 0 0 35px rgba(234, 88, 12, 0.9) !important;
+}}
+
+/* Ocultar las cajas cuadradas feas con fondo naranja pegadas a los números */
+div[data-testid="stSlider"] div[role="slider"] > div {{
+    display: none !important;
+}}
+
+/* Números de los extremos (0 y 100) en formato limpio y sutil */
+div[data-testid="stSlider"] [data-testid="stSliderTickBar"] > div,
+div[data-testid="stSlider"] div[data-baseweb="slider"] ~ div div {{
+    background: transparent !important;
+    color: #94a3b8 !important;
+    font-family: 'Space Grotesk', monospace !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: none !important;
+}}
+
 </style>
 <div class="watermark-bg"></div>
 
