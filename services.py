@@ -73,7 +73,7 @@ def cargar_super_matriz():
         df_final = pd.concat(lista_dfs, ignore_index=True)
         dict_ag = {
             'NOMBRE COMPLETO': 'first', 'LIDER': 'first',
-            'CORREO_EXCEL': lambda x: next((e for e in x if e and '@' in e), ''),
+            'CORREO_EXCEL': lambda x: next((e for e in x if isinstance(e, str) and '@' in e), ''),
             'TELEFONO': 'first',
             'PRODUCTO / MATERIAL': lambda x: '+'.join([str(i) for i in x if str(i).strip() not in ['', 'nan', 'None']]),
             'ARCHIVO_ORIGEN': 'first'
