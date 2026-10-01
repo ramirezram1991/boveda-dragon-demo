@@ -1,5 +1,5 @@
 # ==============================================================================
-# OPERACIÓN DRAGÓN — PORTAL FINANCIERO Y BÓVEDA INSTITUCIONAL
+# OPERACIÃ“N DRAGÃ“N â€” PORTAL FINANCIERO Y BÃ“VEDA INSTITUCIONAL
 # ARQUITECTURA MODULARIZADA (VANGUARD RESILIENCE ENGINE)
 # ==============================================================================
 import os
@@ -16,7 +16,7 @@ from email.mime.text import MIMEText
 import streamlit as st
 import streamlit.components.v1 as components
 
-# Módulos del Sistema
+# MÃ³dulos del Sistema
 from config import (
     ADMIN_USERS,
     HONEYTOKENS,
@@ -62,15 +62,15 @@ from components import (
     renderizar_dashboard_interactivo
 )
 
-# 1. Configuración de Página
+# 1. ConfiguraciÃ³n de PÃ¡gina
 st.set_page_config(
-    page_title="Operación Dragón — Bóveda Clasificada",
-    page_icon="🐉",
+    page_title="OperaciÃ³n DragÃ³n â€” BÃ³veda Clasificada",
+    page_icon="ðŸ‰",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# 2. Inicialización de Base de Datos y Caché
+# 2. InicializaciÃ³n de Base de Datos y CachÃ©
 init_db()
 
 # 3. Control de Estado Global
@@ -88,7 +88,7 @@ def cambiar_vista(nueva_vista):
     st.session_state['registro_paso'] = 1
     st.session_state['intentos_otp'] = 0
 
-# 4. Inyección de Estilos Maestros Dinámicos
+# 4. InyecciÃ³n de Estilos Maestros DinÃ¡micos
 css_maestro = obtener_css_maestro(st.session_state['tema_actual'])
 st.markdown(css_maestro, unsafe_allow_html=True)
 
@@ -103,11 +103,11 @@ trm = obtener_trm()
 # --- BARRA SUPERIOR CON SELECTOR DE TEMA DUAL ---
 col_head1, col_head2 = st.columns([8, 2.5])
 with col_head1:
-    st.markdown("<div class='text-orange font-teko' style='font-size:26px; letter-spacing:2px; padding-top:4px;'>OPERACIÓN DRAGÓN // CLÚSTER FINANCIERO</div>", unsafe_allow_html=True)
+    st.markdown("<div class='text-orange font-teko' style='font-size:26px; letter-spacing:2px; padding-top:4px;'>OPERACIÃ“N DRAGÃ“N // CLÃšSTER FINANCIERO</div>", unsafe_allow_html=True)
 with col_head2:
     tema_sel = st.selectbox(
-        "Estilo de Bóveda:",
-        ["🐉 Cyber Dragón", "👑 Bóveda Imperial Oro"],
+        "Estilo de BÃ³veda:",
+        ["ðŸ‰ Cyber DragÃ³n", "ðŸ‘‘ BÃ³veda Imperial Oro"],
         index=0 if st.session_state['tema_actual'] == 'cyber_dragon' else 1,
         label_visibility="collapsed"
     )
@@ -119,7 +119,7 @@ with col_head2:
 st.markdown("<div style='margin-bottom:1.5rem;'></div>", unsafe_allow_html=True)
 
 
-# --- VISTA 1: LANDING PAGE CON CANVAS DE PARTÍCULAS ---
+# --- VISTA 1: LANDING PAGE CON CANVAS DE PARTÃCULAS ---
 if st.session_state['vista_actual'] == 'landing':
     components.html('''
     <script>
@@ -214,27 +214,27 @@ if st.session_state['vista_actual'] == 'landing':
     render_emblema_tecnologico()
     
     st.markdown("""
-    <div class="landing-title">TU MATERIAL, TU PAGO Y TU <br><span class="text-orange">LÍDER</span> EN UN SOLO LUGAR</div>
+    <div class="landing-title">TU MATERIAL, TU PAGO Y TU <br><span class="text-orange">LÃDER</span> EN UN SOLO LUGAR</div>
     <div style="text-align:center; max-width:620px; margin: 0 auto 2.5rem auto; color:var(--text-sub); font-size:1.15rem; line-height:1.6;">
-        Consulte su liquidación individual y administre libremente sus preferencias de desembolso entre Fiducia y Nube. Plataforma protegida bajo criptografía institucional.
+        Consulte su liquidaciÃ³n individual y administre libremente sus preferencias de desembolso entre Fiducia y Nube. Plataforma protegida bajo criptografÃ­a institucional.
     </div>
     """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
-        st.button("Ingresar a Mi Bóveda", type="primary", use_container_width=True, on_click=cambiar_vista, args=('login',))
+        st.button("Ingresar a Mi BÃ³veda", type="primary", use_container_width=True, on_click=cambiar_vista, args=('login',))
         
     st.markdown("<br><br>", unsafe_allow_html=True)
     c1, c2, c3 = st.columns(3)
-    with c1: st.markdown("""<div class="card-custom"><div style="font-size:2rem; margin-bottom:8px;">🔒</div><h4 class="font-teko" style="font-size:1.6rem; margin-top:0; color:white;">PRIVACIDAD Y AISLAMIENTO</h4><p style="color:var(--text-sub); line-height:1.5; margin:0;">Su portafolio está encriptado y vinculado exclusivamente a su documento. Visualice su inventario de activos, equivalencias en divisa extranjera y valorización neta en tiempo real bajo estricto sigilo bancario.</p></div>""", unsafe_allow_html=True)
-    with c2: st.markdown("""<div class="card-custom"><div style="font-size:2rem; margin-bottom:8px;">⚙️</div><h4 class="font-teko" style="font-size:1.6rem; margin-top:0; color:white;">GESTIÓN DE DESEMBOLSO AUTÓNOMA</h4><p style="color:var(--text-sub); line-height:1.5; margin:0;">Administre su capital con libertad táctica. Defina dinámicamente sus porcentajes de dispersión, genere recibos oficiales instantáneos y reporte solicitudes directamente al equipo auditor.</p></div>""", unsafe_allow_html=True)
-    with c3: st.markdown("""<div class="card-custom"><div style="font-size:2rem; margin-bottom:8px;">🛡️</div><h4 class="font-teko" style="font-size:1.6rem; margin-top:0; color:white;">AUDITORÍA FORENSE INMUTABLE</h4><p style="color:var(--text-sub); line-height:1.5; margin:0;">Toda modificación o inicio de sesión es registrado en un libro mayor criptográfico. Descargue comprobantes con sello HMAC-SHA256 y garantice la trazabilidad de sus fondos bajo estándares legales.</p></div>""", unsafe_allow_html=True)
+    with c1: st.markdown("""<div class="card-custom"><div style="font-size:2rem; margin-bottom:8px;">ðŸ”’</div><h4 class="font-teko" style="font-size:1.6rem; margin-top:0; color:white;">PRIVACIDAD Y AISLAMIENTO</h4><p style="color:var(--text-sub); line-height:1.5; margin:0;">Su portafolio estÃ¡ encriptado y vinculado exclusivamente a su documento. Visualice su inventario de activos, equivalencias en divisa extranjera y valorizaciÃ³n neta en tiempo real bajo estricto sigilo bancario.</p></div>""", unsafe_allow_html=True)
+    with c2: st.markdown("""<div class="card-custom"><div style="font-size:2rem; margin-bottom:8px;">âš™ï¸</div><h4 class="font-teko" style="font-size:1.6rem; margin-top:0; color:white;">GESTIÃ“N DE DESEMBOLSO AUTÃ“NOMA</h4><p style="color:var(--text-sub); line-height:1.5; margin:0;">Administre su capital con libertad tÃ¡ctica. Defina dinÃ¡micamente sus porcentajes de dispersiÃ³n, genere recibos oficiales instantÃ¡neos y reporte solicitudes directamente al equipo auditor.</p></div>""", unsafe_allow_html=True)
+    with c3: st.markdown("""<div class="card-custom"><div style="font-size:2rem; margin-bottom:8px;">ðŸ›¡ï¸</div><h4 class="font-teko" style="font-size:1.6rem; margin-top:0; color:white;">AUDITORÃA FORENSE INMUTABLE</h4><p style="color:var(--text-sub); line-height:1.5; margin:0;">Toda modificaciÃ³n o inicio de sesiÃ³n es registrado en un libro mayor criptogrÃ¡fico. Descargue comprobantes con sello HMAC-SHA256 y garantice la trazabilidad de sus fondos bajo estÃ¡ndares legales.</p></div>""", unsafe_allow_html=True)
 
 
-# --- VISTA 2: LOGIN CON EMBLEMA TECNOLÓGICO Y CONTENEDOR SEGURO ---
+# --- VISTA 2: LOGIN CON EMBLEMA TECNOLÃ“GICO Y CONTENEDOR SEGURO ---
 elif st.session_state['vista_actual'] in ['login', 'recuperar']:
     st.markdown('<div class="btn-secondary" style="margin-bottom:1rem;">', unsafe_allow_html=True)
-    st.button("← VOLVER AL INICIO", on_click=cambiar_vista, args=('landing',))
+    st.button("â† VOLVER AL INICIO", on_click=cambiar_vista, args=('landing',))
     st.markdown('</div>', unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2.2, 1])
@@ -245,18 +245,18 @@ elif st.session_state['vista_actual'] in ['login', 'recuperar']:
         
         with st.container(border=True):
             if st.session_state['vista_actual'] == 'recuperar':
-                st.markdown("<h2 class='font-teko' style='font-size:3rem; margin-top:0; text-align:center; color:white;'>RECUPERAR BÓVEDA</h2>", unsafe_allow_html=True)
-                st.markdown("<p style='color:var(--text-sub); margin-bottom:1.8rem; text-align:center;'>Ingresa tu Cédula o ID y el correo registrado para recibir un PIN temporal.</p>", unsafe_allow_html=True)
+                st.markdown("<h2 class='font-teko' style='font-size:3rem; margin-top:0; text-align:center; color:white;'>RECUPERAR BÃ“VEDA</h2>", unsafe_allow_html=True)
+                st.markdown("<p style='color:var(--text-sub); margin-bottom:1.8rem; text-align:center;'>Ingresa tu CÃ©dula o ID y el correo registrado para recibir un PIN temporal.</p>", unsafe_allow_html=True)
                 
-                rec_dni = sanitizar_texto(st.text_input("Cédula (CC) / ID"))
-                rec_email = sanitizar_texto(st.text_input("Correo electrónico registrado").lower())
+                rec_dni = sanitizar_texto(st.text_input("CÃ©dula (CC) / ID"))
+                rec_email = sanitizar_texto(st.text_input("Correo electrÃ³nico registrado").lower())
                 
                 st.markdown("<br>", unsafe_allow_html=True)
                 if st.button("Enviar PIN de Rescate", type="primary", use_container_width=True):
                     u_db = verificar_usuario(rec_dni)
                     if u_db and (u_db.get('correo') == rec_email or not u_db.get('correo')):
                         pin_temporal = str(random.randint(100000, 999999))
-                        cuerpo = f"OPERACIÓN DRAGÓN\n\nSu PIN temporal de rescate es: {pin_temporal}\nUse este PIN como contraseña para acceder y luego cámbiela."
+                        cuerpo = f"OPERACIÃ“N DRAGÃ“N\n\nSu PIN temporal de rescate es: {pin_temporal}\nUse este PIN como contraseÃ±a para acceder y luego cÃ¡mbiela."
                         
                         with st.spinner("Enviando rescate..."):
                             exito = False
@@ -276,34 +276,34 @@ elif st.session_state['vista_actual'] in ['login', 'recuperar']:
                         guardar_usuario(rec_dni, pass_hash, rec_email)
                         registrar_auditoria(rec_dni, "RECUPERACION_CLAVE_PIN_EMITIDO")
                         
-                        if exito: st.success("✅ PIN de rescate enviado a su correo.")
-                        else: st.warning(f"⚠️ PIN temporal asignado (Modo presentación): **{pin_temporal}**")
+                        if exito: st.success("âœ… PIN de rescate enviado a su correo.")
+                        else: st.warning(f"âš ï¸ PIN temporal asignado (Modo presentaciÃ³n): **{pin_temporal}**")
                         
                         st.session_state['vista_actual'] = 'login'
                         st.rerun()
                     else:
-                        st.error("❌ Los datos no coinciden con ninguna cuenta registrada.")
+                        st.error("âŒ Los datos no coinciden con ninguna cuenta registrada.")
                 
                 st.markdown('<div class="btn-secondary" style="margin-top:10px;">', unsafe_allow_html=True)
                 st.button("Cancelar", use_container_width=True, on_click=cambiar_vista, args=('login',))
                 st.markdown('</div>', unsafe_allow_html=True)
                 
             else:
-                st.markdown("<h2 class='font-teko' style='font-size:3rem; margin-top:0; text-align:center; color:white;'>INICIAR SESIÓN</h2>", unsafe_allow_html=True)
-                st.markdown("<p style='color:var(--text-sub); margin-bottom:1.8rem; text-align:center;'>Ingrese con su cédula y contraseña personal.</p>", unsafe_allow_html=True)
+                st.markdown("<h2 class='font-teko' style='font-size:3rem; margin-top:0; text-align:center; color:white;'>INICIAR SESIÃ“N</h2>", unsafe_allow_html=True)
+                st.markdown("<p style='color:var(--text-sub); margin-bottom:1.8rem; text-align:center;'>Ingrese con su cÃ©dula y contraseÃ±a personal.</p>", unsafe_allow_html=True)
                 
-                cc_log = sanitizar_texto(st.text_input("Cédula (CC) / ID"))
-                pass_log = st.text_input("Contraseña", type="password")
+                cc_log = sanitizar_texto(st.text_input("CÃ©dula (CC) / ID"))
+                pass_log = st.text_input("ContraseÃ±a", type="password")
                 
                 st.markdown("<br>", unsafe_allow_html=True)
-                if st.button("Acceder a Bóveda", type="primary", use_container_width=True):
+                if st.button("Acceder a BÃ³veda", type="primary", use_container_width=True):
                     raw_id = cc_log.strip()
                     cd_limpia = raw_id.lstrip('0') or raw_id
                     
                     # Honeytoken Trap Detector
                     if raw_id in HONEYTOKENS or cd_limpia in HONEYTOKENS:
-                        registrar_auditoria(raw_id or cd_limpia, "ALERTA_HONEYTOKEN_PENETRATION_ATTEMPT", "Intento de acceso a cuenta señuelo trampa")
-                        st.error("❌ Credenciales inválidas.")
+                        registrar_auditoria(raw_id or cd_limpia, "ALERTA_HONEYTOKEN_PENETRATION_ATTEMPT", "Intento de acceso a cuenta seÃ±uelo trampa")
+                        st.error("âŒ Credenciales invÃ¡lidas.")
                         st.stop()
                     
                     # Check Anti-Fuerza Bruta
@@ -340,22 +340,22 @@ elif st.session_state['vista_actual'] in ['login', 'recuperar']:
                             else:
                                 intentos = registrar_intento_fallido(cd_limpia)
                                 registrar_auditoria(cd_limpia, "LOGIN_FALLIDO_PASSWORD_ERRONEA", f"Intento {intentos}")
-                                st.error(f"❌ Contraseña incorrecta. (Intento fallido {intentos}/5)")
+                                st.error(f"âŒ ContraseÃ±a incorrecta. (Intento fallido {intentos}/5)")
                         else:
                             registrar_auditoria(cd_limpia or "DESCONOCIDO", "LOGIN_FALLIDO_DNI_NO_REGISTRADO")
-                            st.error("❌ Cédula no registrada. Por favor regístrese abajo.")
+                            st.error("âŒ CÃ©dula no registrada. Por favor regÃ­strese abajo.")
                 
                 st.markdown('<div class="btn-secondary" style="margin-top:12px;">', unsafe_allow_html=True)
                 c_b1, c_b2 = st.columns(2)
                 with c_b1: st.button("Crear cuenta", use_container_width=True, on_click=cambiar_vista, args=('registro',))
-                with c_b2: st.button("Olvidé mi clave", use_container_width=True, on_click=cambiar_vista, args=('recuperar',))
+                with c_b2: st.button("OlvidÃ© mi clave", use_container_width=True, on_click=cambiar_vista, args=('recuperar',))
                 st.markdown('</div>', unsafe_allow_html=True)
 
 
 # --- VISTA 3: REGISTRO CON OTP ---
 elif st.session_state['vista_actual'] == 'registro':
     st.markdown('<div class="btn-secondary" style="margin-bottom:1rem;">', unsafe_allow_html=True)
-    st.button("← VOLVER AL LOGIN", on_click=cambiar_vista, args=('login',))
+    st.button("â† VOLVER AL LOGIN", on_click=cambiar_vista, args=('login',))
     st.markdown('</div>', unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns([1, 2.2, 1])
@@ -366,12 +366,12 @@ elif st.session_state['vista_actual'] == 'registro':
         
         with st.container(border=True):
             if st.session_state['registro_paso'] == 1:
-                st.markdown("<h2 class='font-teko' style='font-size:3rem; margin-top:0; text-align:center; color:white;'>REGISTRO DE BÓVEDA</h2>", unsafe_allow_html=True)
-                st.markdown("<p style='color:var(--text-sub); margin-bottom:1.8rem; text-align:center;'>La cédula debe constar en las matrices oficiales del líder.</p>", unsafe_allow_html=True)
+                st.markdown("<h2 class='font-teko' style='font-size:3rem; margin-top:0; text-align:center; color:white;'>REGISTRO DE BÃ“VEDA</h2>", unsafe_allow_html=True)
+                st.markdown("<p style='color:var(--text-sub); margin-bottom:1.8rem; text-align:center;'>La cÃ©dula debe constar en las matrices oficiales del lÃ­der.</p>", unsafe_allow_html=True)
                 
-                c_reg = sanitizar_texto(st.text_input("Número de Cédula (CC) / ID"))
-                e_reg = sanitizar_texto(st.text_input("Correo electrónico para notificaciones").lower())
-                p_reg = st.text_input("Crear Contraseña Segura", type="password")
+                c_reg = sanitizar_texto(st.text_input("NÃºmero de CÃ©dula (CC) / ID"))
+                e_reg = sanitizar_texto(st.text_input("Correo electrÃ³nico para notificaciones").lower())
+                p_reg = st.text_input("Crear ContraseÃ±a Segura", type="password")
                 hp_bot = st.text_input("TrampaBot", label_visibility="hidden")
                 
                 st.markdown("<br>", unsafe_allow_html=True)
@@ -380,16 +380,16 @@ elif st.session_state['vista_actual'] == 'registro':
                     if hp_bot:
                         # CORE ARCHITECT: Silent ban for bots
                         registrar_auditoria(cd or "BOT", "HONEYPOT_ACTIVADO", "Shadow Ban Aplicado")
-                        st.error("⛔ Cédula no localizada en las matrices oficiales de líderes.")
+                        st.error("â›” CÃ©dula no localizada en las matrices oficiales de lÃ­deres.")
                     elif not cd or not e_reg or not p_reg:
-                        st.error("⚠️ Complete todos los campos requeridos.")
+                        st.error("âš ï¸ Complete todos los campos requeridos.")
                     elif df_usuarios.empty:
-                        st.error("⚠️ Matrices base no conectadas.")
+                        st.error("âš ï¸ Matrices base no conectadas.")
                     elif cd not in df_usuarios['ID/CC/DNI'].values:
-                        st.error("⛔ Cédula no localizada en las matrices oficiales de líderes. Contacte a su líder de grupo.")
+                        st.error("â›” CÃ©dula no localizada en las matrices oficiales de lÃ­deres. Contacte a su lÃ­der de grupo.")
                     else:
                         if verificar_usuario(cd):
-                            st.warning("⚠️ Esta cédula ya tiene cuenta activa. Puede iniciar sesión directamente.")
+                            st.warning("âš ï¸ Esta cÃ©dula ya tiene cuenta activa. Puede iniciar sesiÃ³n directamente.")
                         else:
                             codigo_otp = str(random.randint(100000, 999999))
                             st.session_state['codigo_otp_debug'] = codigo_otp
@@ -402,24 +402,24 @@ elif st.session_state['vista_actual'] == 'registro':
                                 s = smtplib.SMTP('smtp.gmail.com', 587, timeout=5)
                                 s.starttls(); s.login(REMITENTE_EMAIL, REMITENTE_PASSWORD.replace(" ", ""))
                                 s.send_message(msg); s.quit()
-                                st.toast("SMTP exitoso: Google aceptó el correo.", icon="??")
+                                st.toast("SMTP exitoso: Google aceptÃ³ el correo.", icon="??")
                                 exito = True
                             except Exception as e:
                                 st.error(f"Error de red al enviar el correo: {e}")
                             
                             st.session_state['temp_data'] = {'dni': cd, 'email': e_reg, 'pin': p_reg, 'otp': codigo_otp}
                             st.session_state['registro_paso'] = 2
-                            if not exito: st.warning(f"⚠️ Servidor SMTP no disponible. Código OTP en pantalla: **{codigo_otp}**")
+                            if not exito: st.warning(f"âš ï¸ Servidor SMTP no disponible. CÃ³digo OTP en pantalla: **{codigo_otp}**")
                             st.rerun()
                             
             elif st.session_state['registro_paso'] == 2:
-                st.markdown("<h2 class='font-teko' style='font-size:3rem; margin-top:0; text-align:center; color:white;'>VERIFICAR CÓDIGO OTP</h2>", unsafe_allow_html=True)
-                st.info(f"Ingresa el código enviado a: **{st.session_state['temp_data']['email']}**")
+                st.markdown("<h2 class='font-teko' style='font-size:3rem; margin-top:0; text-align:center; color:white;'>VERIFICAR CÃ“DIGO OTP</h2>", unsafe_allow_html=True)
+                st.info(f"Ingresa el cÃ³digo enviado a: **{st.session_state['temp_data']['email']}**")
                 
                 if st.session_state.get('codigo_otp_debug'):
-                    st.success(f"?? [MODO DEMO] C�digo interceptado: {st.session_state['codigo_otp_debug']}")
+                    st.success(f"?? [MODO DEMO] Código interceptado: {st.session_state['codigo_otp_debug']}")
                     
-                c_otp = st.text_input("Código de 6 dígitos")
+                c_otp = st.text_input("CÃ³digo de 6 dÃ­gitos")
                 st.markdown("<br>", unsafe_allow_html=True)
                 if st.button("Verificar y Activar Cuenta", type="primary", use_container_width=True):
                     if c_otp.strip() == st.session_state['temp_data']['otp']:
@@ -432,7 +432,7 @@ elif st.session_state['vista_actual'] == 'registro':
                         st.rerun()
                     else:
                         st.session_state['intentos_otp'] += 1
-                        st.error(f"❌ Código incorrecto. Intentos restantes: {3 - st.session_state['intentos_otp']}")
+                        st.error(f"âŒ CÃ³digo incorrecto. Intentos restantes: {3 - st.session_state['intentos_otp']}")
                         
                 st.markdown('<div class="btn-secondary" style="margin-top:10px;">', unsafe_allow_html=True)
                 st.button("Cancelar", use_container_width=True, on_click=cambiar_vista, args=('login',))
@@ -448,10 +448,10 @@ elif st.session_state['vista_actual'] == 'dashboard':
     
     col_izq, col_der = st.columns([8, 1.4])
     with col_izq: 
-        st.markdown("<div class='text-orange font-teko' style='font-size:24px; letter-spacing:2px; margin-top:5px;'>OPERACIÓN DRAGÓN // PORTAL FINANCIERO</div>", unsafe_allow_html=True)
+        st.markdown("<div class='text-orange font-teko' style='font-size:24px; letter-spacing:2px; margin-top:5px;'>OPERACIÃ“N DRAGÃ“N // PORTAL FINANCIERO</div>", unsafe_allow_html=True)
     with col_der: 
         st.markdown('<div class="btn-secondary">', unsafe_allow_html=True)
-        if st.button("Cerrar Sesión", use_container_width=True):
+        if st.button("Cerrar SesiÃ³n", use_container_width=True):
             registrar_auditoria(c_act, "LOGOUT_VOLUNTARIO")
             cambiar_vista('landing')
             st.rerun()
@@ -460,10 +460,10 @@ elif st.session_state['vista_actual'] == 'dashboard':
     if es_admin:
         st.markdown("""
         <div style="background:linear-gradient(90deg, #7f1d1d, #991b1b); padding:10px 18px; border-radius:8px; margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center;">
-            <div style="font-weight:800; font-size:1.1rem; color:white;">🛡️ CONSOLA GENERAL DE ARQUITECTO (AUTOGESTIÓN TOTAL)</div>
+            <div style="font-weight:800; font-size:1.1rem; color:white;">ðŸ›¡ï¸ CONSOLA GENERAL DE ARQUITECTO (AUTOGESTIÃ“N TOTAL)</div>
             <div style="display:flex; align-items:center; gap:15px;">
                 <div style="font-size:11px; color:#fca5a5; font-weight:bold;">MODO ADMIN ACTIVO</div>
-                <div class="radar-box" style="width:30px; height:30px; border-radius:50%; background:rgba(234,88,12,0.1); border:1px solid rgba(234,88,12,0.4); box-shadow:0 0 10px rgba(234,88,12,0.3); overflow:hidden; position:relative;" title="Auditoría Forense Activa">
+                <div class="radar-box" style="width:30px; height:30px; border-radius:50%; background:rgba(234,88,12,0.1); border:1px solid rgba(234,88,12,0.4); box-shadow:0 0 10px rgba(234,88,12,0.3); overflow:hidden; position:relative;" title="AuditorÃ­a Forense Activa">
                     <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:conic-gradient(from 0deg, transparent 70%, rgba(234,88,12,0.9) 100%); animation:radar-spin 2s linear infinite; border-radius:50%;"></div>
                 </div>
             </div>
@@ -471,21 +471,21 @@ elif st.session_state['vista_actual'] == 'dashboard':
         """, unsafe_allow_html=True)
         
         tab_busc, tab_archivos, tab_activos, tab_tasas, tab_logs, tab_reclamos, tab_arquitectos = st.tabs([
-            "🔍 Buscador y Cliente",
-            "📤 Subir Matrices Excel",
-            "🏷️ Gestión de Activos",
-            "⚙️ Parámetros Globales",
-            "🕵️‍♂️ Bitácora Forense",
-            "📬 Reclamaciones",
-            "🛡️ Arquitectos"
+            "ðŸ” Buscador y Cliente",
+            "ðŸ“¤ Subir Matrices Excel",
+            "ðŸ·ï¸ GestiÃ³n de Activos",
+            "âš™ï¸ ParÃ¡metros Globales",
+            "ðŸ•µï¸â€â™‚ï¸ BitÃ¡cora Forense",
+            "ðŸ“¬ Reclamaciones",
+            "ðŸ›¡ï¸ Arquitectos"
         ])
         
-        # --- TAB 1: BUSCADOR UNIVERSAL Y EDICIÓN MANUAL DE CLIENTE ---
+        # --- TAB 1: BUSCADOR UNIVERSAL Y EDICIÃ“N MANUAL DE CLIENTE ---
         with tab_busc:
-            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>CONSULTA Y EDICIÓN DIRECTA POR CLIENTE</h4>", unsafe_allow_html=True)
+            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>CONSULTA Y EDICIÃ“N DIRECTA POR CLIENTE</h4>", unsafe_allow_html=True)
             col_b1, col_b2 = st.columns([3, 1])
             with col_b1:
-                bcc = st.text_input("Ingrese la cédula o nombre a auditar:")
+                bcc = st.text_input("Ingrese la cÃ©dula o nombre a auditar:")
             with col_b2:
                 st.markdown("<br>", unsafe_allow_html=True)
                 btn_buscar = st.button("Buscar en Red", type="primary", use_container_width=True)
@@ -495,8 +495,8 @@ elif st.session_state['vista_actual'] == 'dashboard':
                 filtro = df_usuarios[df_usuarios['ID/CC/DNI'].str.contains(q, na=False) | df_usuarios['NOMBRE COMPLETO'].astype(str).str.upper().str.contains(q, na=False)]
                 if not filtro.empty:
                     if len(filtro) > 1:
-                        st.info(f"🔍 Se encontraron {len(filtro)} coincidencias para '{q}':")
-                        opciones_titular = {f"{r['NOMBRE COMPLETO']} — CÉDULA/ID: {r['ID/CC/DNI']} (Líder: {r['LIDER']})": r['ID/CC/DNI'] for _, r in filtro.iterrows()}
+                        st.info(f"ðŸ” Se encontraron {len(filtro)} coincidencias para '{q}':")
+                        opciones_titular = {f"{r['NOMBRE COMPLETO']} â€” CÃ‰DULA/ID: {r['ID/CC/DNI']} (LÃ­der: {r['LIDER']})": r['ID/CC/DNI'] for _, r in filtro.iterrows()}
                         sel_titular = st.selectbox("Seleccione el titular a auditar:", list(opciones_titular.keys()))
                         bcd = opciones_titular[sel_titular]
                         st.session_state['cliente_auditado'] = bcd
@@ -504,7 +504,7 @@ elif st.session_state['vista_actual'] == 'dashboard':
                         bcd = filtro.iloc[0]['ID/CC/DNI']
                         st.session_state['cliente_auditado'] = bcd
                 else:
-                    st.warning(f"⚠️ No se hallaron coincidencias para '{q}'.")
+                    st.warning(f"âš ï¸ No se hallaron coincidencias para '{q}'.")
             
             if st.session_state.get('cliente_auditado'):
                 bcd = st.session_state['cliente_auditado']
@@ -519,19 +519,19 @@ elif st.session_state['vista_actual'] == 'dashboard':
                         <div>
                             <div style="font-size:0.72rem; color:#94a3b8; font-weight:700; letter-spacing:1px; text-transform:uppercase;">TITULAR OFICIAL AUDITADO</div>
                             <div style="font-family:'Teko', sans-serif; font-size:1.85rem; color:#f8fafc; line-height:1.1; text-transform:uppercase;">{nom_completo}</div>
-                            <div style="color:#cbd5e1; font-size:0.88rem; font-weight:600;">CÉDULA (CC) / ID: <span style="color:white;">{bcd}</span> &nbsp;|&nbsp; LÍDER: <span style="color:var(--accent);">{lider_titular}</span></div>
+                            <div style="color:#cbd5e1; font-size:0.88rem; font-weight:600;">CÃ‰DULA (CC) / ID: <span style="color:white;">{bcd}</span> &nbsp;|&nbsp; LÃDER: <span style="color:var(--accent);">{lider_titular}</span></div>
                         </div>
                         <div style="text-align:right;">
-                            <span style="background:rgba(16, 185, 129, 0.15); color:#10b981; border:1px solid rgba(16, 185, 129, 0.35); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; text-transform:uppercase;">● ACTIVO EN MATRIZ</span>
+                            <span style="background:rgba(16, 185, 129, 0.15); color:#10b981; border:1px solid rgba(16, 185, 129, 0.35); padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.75rem; text-transform:uppercase;">â— ACTIVO EN MATRIZ</span>
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
                     
-                    with st.expander(f"✏️ Modificar Materiales o Saldo de {u_row['NOMBRE COMPLETO']} (CÉDULA/ID: {bcd})"):
-                        st.markdown("<p style='color:#cbd5e1; font-size:0.9rem;'>Ajuste las cantidades individuales de cada activo. La fórmula se calculará y guardará automáticamente.</p>", unsafe_allow_html=True)
+                    with st.expander(f"âœï¸ Modificar Materiales o Saldo de {u_row['NOMBRE COMPLETO']} (CÃ‰DULA/ID: {bcd})"):
+                        st.markdown("<p style='color:#cbd5e1; font-size:0.9rem;'>Ajuste las cantidades individuales de cada activo. La fÃ³rmula se calcularÃ¡ y guardarÃ¡ automÃ¡ticamente.</p>", unsafe_allow_html=True)
                         
                         cat = obtener_catalogo_activos()
-                        cat_activo = cat  # Ya está filtrado por la función base
+                        cat_activo = cat  # Ya estÃ¡ filtrado por la funciÃ³n base
                         form_actual = str(u_row['PRODUCTO / MATERIAL'])
                         mat_actuales = calcular_materiales(form_actual, cat_activo)
                         
@@ -541,11 +541,11 @@ elif st.session_state['vista_actual'] == 'dashboard':
                         for idx, (cod, mat_info) in enumerate(cat_activo.items()):
                             with cols_mats[idx % 3]:
                                 cant_act = mat_actuales.get(cod, 0)
-                                icon = mat_info.get('icono', '🔹')
+                                icon = mat_info.get('icono', 'ðŸ”¹')
                                 nuevas_cantidades[cod] = st.number_input(f"{icon} {mat_info['nombre']} ({cod})", min_value=0, value=int(cant_act), step=1, key=f"mat_edit_{cod}")
                         
                         st.markdown("<br>", unsafe_allow_html=True)
-                        if st.button("💾 Guardar Nuevo Saldo del Cliente", type="primary", use_container_width=True):
+                        if st.button("ðŸ’¾ Guardar Nuevo Saldo del Cliente", type="primary", use_container_width=True):
                             partes_formula = []
                             for cod, cant in nuevas_cantidades.items():
                                 if cant > 0: partes_formula.append(f"{cant}{cod}")
@@ -558,25 +558,25 @@ elif st.session_state['vista_actual'] == 'dashboard':
                                 try: os.remove('super_matriz_cache.pkl')
                                 except Exception: pass
                             st.cache_data.clear()
-                            st.success("✅ Saldo del cliente actualizado exitosamente.")
+                            st.success("âœ… Saldo del cliente actualizado exitosamente.")
                             st.rerun()
                                 
                     renderizar_dashboard_interactivo(bcd, df_usuarios, trm)
                 else:
-                    st.warning(f"⚠️ El titular con CÉDULA/ID \'{bcd}\' no fue localizado en la matriz activa.")
+                    st.warning(f"âš ï¸ El titular con CÃ‰DULA/ID \'{bcd}\' no fue localizado en la matriz activa.")
                     st.session_state['cliente_auditado'] = None
 
         # --- TAB 2: SUBIDA WEB DE EXCEL EN 1 CLIC ---
         with tab_archivos:
             st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>SUBIR O ACTUALIZAR MATRICES EXCEL (.XLSX)</h4>", unsafe_allow_html=True)
-            st.markdown("Arrastra un archivo Excel actualizado para incorporarlo a la base de datos de inmediato sin tocar código:")
+            st.markdown("Arrastra un archivo Excel actualizado para incorporarlo a la base de datos de inmediato sin tocar cÃ³digo:")
             
-            uploaded_file = st.file_uploader("Selecciona el archivo Excel del líder:", type=['xlsx', 'xls'])
+            uploaded_file = st.file_uploader("Selecciona el archivo Excel del lÃ­der:", type=['xlsx', 'xls'])
             if uploaded_file is not None:
-                if st.button("📥 Incorporar Archivo a la Plataforma", type="primary"):
+                if st.button("ðŸ“¥ Incorporar Archivo a la Plataforma", type="primary"):
                     clean_name = os.path.basename(uploaded_file.name)
                     if not clean_name.lower().endswith(('.xlsx', '.xls')):
-                        st.error("❌ Solo se admiten archivos Excel válidos (.xlsx, .xls).")
+                        st.error("âŒ Solo se admiten archivos Excel vÃ¡lidos (.xlsx, .xls).")
                     else:
                         target_path = os.path.join(CARPETA_MATRICES, clean_name)
                         with open(target_path, "wb") as f:
@@ -586,62 +586,62 @@ elif st.session_state['vista_actual'] == 'dashboard':
                             except Exception: pass
                         st.cache_data.clear()
                         registrar_auditoria("ADMIN", "CARGA_WEB_EXCEL_EXITOSA", clean_name)
-                        st.success(f"✅ Archivo '{clean_name}' incorporado. Matriz consolidada actualizada en vivo.")
+                        st.success(f"âœ… Archivo '{clean_name}' incorporado. Matriz consolidada actualizada en vivo.")
                         st.rerun()
 
-        # --- TAB 3: GESTIÓN DE NUEVOS ACTIVOS (EJ: CHILLIBAWE) ---
+        # --- TAB 3: GESTIÃ“N DE NUEVOS ACTIVOS (EJ: CHILLIBAWE) ---
         with tab_activos:
-            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>CATÁLOGO DINÁMICO DE ACTIVOS</h4>", unsafe_allow_html=True)
+            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>CATÃLOGO DINÃMICO DE ACTIVOS</h4>", unsafe_allow_html=True)
             cat_actual = obtener_catalogo_activos()
             
-            with st.expander("➕ Agregar Nuevo Activo al Catálogo (Sin tocar código)"):
+            with st.expander("âž• Agregar Nuevo Activo al CatÃ¡logo (Sin tocar cÃ³digo)"):
                 col_a1, col_a2, col_a3, col_a4 = st.columns([1, 2, 2, 1])
-                with col_a1: nuevo_cod = st.text_input("Código (ej. CH):")
+                with col_a1: nuevo_cod = st.text_input("CÃ³digo (ej. CH):")
                 with col_a2: nuevo_nom = st.text_input("Nombre Oficial (ej. CHILLIBAWE):")
                 with col_a3: nuevo_pre = st.number_input("Precio en USD:", min_value=1.0, value=25000000.0, step=100000.0)
-                with col_a4: nuevo_ico = st.text_input("Icono:", value="🌶️")
+                with col_a4: nuevo_ico = st.text_input("Icono:", value="ðŸŒ¶ï¸")
                 
                 if st.button("Guardar Nuevo Activo", type="primary"):
                     if nuevo_cod and nuevo_nom:
                         guardar_activo(nuevo_cod, nuevo_nom, nuevo_pre, nuevo_ico)
                         registrar_auditoria("ADMIN", "CREACION_ACTIVO_NUEVO", f"{nuevo_cod} - {nuevo_nom}")
-                        st.success(f"✅ Activo '{nuevo_nom}' activado en la red.")
+                        st.success(f"âœ… Activo '{nuevo_nom}' activado en la red.")
                         st.rerun()
-                    else: st.error("Complete el código y nombre del activo.")
+                    else: st.error("Complete el cÃ³digo y nombre del activo.")
                     
             st.dataframe(pd.DataFrame(cat_actual).T[['nombre', 'precio', 'icono']], use_container_width=True)
 
-        # --- TAB 4: PARÁMETROS GLOBALES (10% Y 1% EDITABLES) ---
+        # --- TAB 4: PARÃMETROS GLOBALES (10% Y 1% EDITABLES) ---
         with tab_tasas:
-            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>TASAS Y PARÁMETROS GLOBALES DE LIQUIDACIÓN</h4>", unsafe_allow_html=True)
+            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>TASAS Y PARÃMETROS GLOBALES DE LIQUIDACIÃ“N</h4>", unsafe_allow_html=True)
             params = obtener_parametros_globales()
             
             col_t1, col_t2 = st.columns(2)
             with col_t1:
                 n_desc = st.number_input("Descuento General de Gastos (%):", min_value=0.0, max_value=50.0, value=params.get('descuento_general', 10.0), step=0.5)
             with col_t2:
-                n_com = st.number_input("Comisión Banco Inicial (%):", min_value=0.0, max_value=20.0, value=params.get('comision_banco', 1.0), step=0.1)
+                n_com = st.number_input("ComisiÃ³n Banco Inicial (%):", min_value=0.0, max_value=20.0, value=params.get('comision_banco', 1.0), step=0.1)
                 
-            if st.button("💾 Actualizar Parámetros Globales", type="primary"):
+            if st.button("ðŸ’¾ Actualizar ParÃ¡metros Globales", type="primary"):
                 guardar_parametro_global('descuento_general', n_desc)
                 guardar_parametro_global('comision_banco', n_com)
                 registrar_auditoria("ADMIN", "CAMBIO_TASAS_GLOBALES", f"Desc:{n_desc}% Com:{n_com}%")
-                st.success("✅ Parámetros financieros actualizados para todos los participantes.")
+                st.success("âœ… ParÃ¡metros financieros actualizados para todos los participantes.")
                 st.rerun()
 
-        # --- TAB 5: BITÁCORA FORENSE DE AUDITORÍA ---
+        # --- TAB 5: BITÃCORA FORENSE DE AUDITORÃA ---
         with tab_logs:
-            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>REGISTRO FORENSE DE AUDITORÍA EN TIEMPO REAL</h4>", unsafe_allow_html=True)
+            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>REGISTRO FORENSE DE AUDITORÃA EN TIEMPO REAL</h4>", unsafe_allow_html=True)
             df_logs = obtener_logs()
             if not df_logs.empty:
                 st.dataframe(df_logs, use_container_width=True, hide_index=True)
             else:
-                st.info("Sin eventos registrados en la bitácora aún.")
+                st.info("Sin eventos registrados en la bitÃ¡cora aÃºn.")
         
-        # --- TAB 6: BUZÓN DE RECLAMACIONES Y EVIDENCIAS ---
+        # --- TAB 6: BUZÃ“N DE RECLAMACIONES Y EVIDENCIAS ---
         with tab_reclamos:
-            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>BUZÓN DE RECLAMACIONES Y VOUCHERS</h4>", unsafe_allow_html=True)
-            st.caption("Acceso inmediato a los vouchers, fotos y notas enviadas por usuarios que reportan discrepancias en su liquidación.")
+            st.markdown("<h4 class='font-teko' style='font-size:1.8rem; color:white;'>BUZÃ“N DE RECLAMACIONES Y VOUCHERS</h4>", unsafe_allow_html=True)
+            st.caption("Acceso inmediato a los vouchers, fotos y notas enviadas por usuarios que reportan discrepancias en su liquidaciÃ³n.")
             
             with get_db_connection() as conn:
                 reclamos = pd.read_sql_query("SELECT id, fecha, cedula, mensaje, archivo_path, estado FROM reclamaciones ORDER BY id DESC", conn)
@@ -651,16 +651,16 @@ elif st.session_state['vista_actual'] == 'dashboard':
             else:
                 pendientes = len(reclamos[reclamos['estado'] == 'PENDIENTE'])
                 if pendientes > 0:
-                    st.warning(f"⚠️ Tienes **{pendientes} reclamación(es) pendiente(s)** por revisar.")
+                    st.warning(f"âš ï¸ Tienes **{pendientes} reclamaciÃ³n(es) pendiente(s)** por revisar.")
                 else:
-                    st.success("✅ Todas las reclamaciones han sido atendidas.")
+                    st.success("âœ… Todas las reclamaciones han sido atendidas.")
                 
-                filtro_est = st.radio("Filtrar por estado:", ["Todos", "Pendientes", "En Revisión", "Resueltos"], horizontal=True)
+                filtro_est = st.radio("Filtrar por estado:", ["Todos", "Pendientes", "En RevisiÃ³n", "Resueltos"], horizontal=True)
                 reclamos_filtrados = reclamos
                 if filtro_est == "Pendientes":
                     reclamos_filtrados = reclamos[reclamos['estado'] == 'PENDIENTE']
-                elif filtro_est == "En Revisión":
-                    reclamos_filtrados = reclamos[reclamos['estado'] == 'EN REVISIÓN']
+                elif filtro_est == "En RevisiÃ³n":
+                    reclamos_filtrados = reclamos[reclamos['estado'] == 'EN REVISIÃ“N']
                 elif filtro_est == "Resueltos":
                     reclamos_filtrados = reclamos[reclamos['estado'] == 'RESUELTO']
 
@@ -669,11 +669,11 @@ elif st.session_state['vista_actual'] == 'dashboard':
                     nom_titular = u_match['NOMBRE COMPLETO'].values[0] if not u_match.empty else "NO REGISTRA EN MATRIZ"
                     lider_titular = u_match['LIDER'].values[0] if not u_match.empty else "NO ASIGNADO"
                     
-                    titulo_exp = f"Radicado #{row['id']} — {nom_titular} (CÉDULA/ID: {row['cedula']}) — {row['fecha']} [{row['estado']}]"
+                    titulo_exp = f"Radicado #{row['id']} â€” {nom_titular} (CÃ‰DULA/ID: {row['cedula']}) â€” {row['fecha']} [{row['estado']}]"
                     with st.expander(titulo_exp, expanded=(row['estado'] == 'PENDIENTE')):
                         st.markdown(f"""
                         <div style='background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:12px; margin-bottom:12px;'>
-                            <div style='color:#94a3b8; font-size:0.85rem;'>TITULAR: <strong style='color:white;'>{nom_titular}</strong> &nbsp;|&nbsp; CÉDULA/ID: <strong style='color:white;'>{row['cedula']}</strong> &nbsp;|&nbsp; LÍDER: <strong style='color:var(--accent);'>{lider_titular}</strong></div>
+                            <div style='color:#94a3b8; font-size:0.85rem;'>TITULAR: <strong style='color:white;'>{nom_titular}</strong> &nbsp;|&nbsp; CÃ‰DULA/ID: <strong style='color:white;'>{row['cedula']}</strong> &nbsp;|&nbsp; LÃDER: <strong style='color:var(--accent);'>{lider_titular}</strong></div>
                             <div style='margin-top:8px; font-size:0.95rem; color:#f1f5f9;'><strong>Mensaje del cliente:</strong><br/>{html.escape(str(row['mensaje']))}</div>
                         </div>
                         """, unsafe_allow_html=True)
@@ -684,27 +684,27 @@ elif st.session_state['vista_actual'] == 'dashboard':
                             ext = str(row['archivo_path']).split('.')[-1].lower()
                             mime = f"image/{ext}" if ext in ['jpg', 'jpeg', 'png', 'webp'] else "application/pdf"
                             
-                            st.markdown("<strong>📸 Soporte / Voucher adjunto por el cliente:</strong>", unsafe_allow_html=True)
+                            st.markdown("<strong>ðŸ“¸ Soporte / Voucher adjunto por el cliente:</strong>", unsafe_allow_html=True)
                             if ext in ['jpg', 'jpeg', 'png', 'webp']:
-                                st.image(contenido_evidencia, caption=f"Voucher enviado por {nom_titular} (CÉDULA/ID: {row['cedula']})", use_container_width=True)
+                                st.image(contenido_evidencia, caption=f"Voucher enviado por {nom_titular} (CÃ‰DULA/ID: {row['cedula']})", use_container_width=True)
                             
                             c_dl1, c_dl2 = st.columns([1.5, 2])
                             with c_dl1:
                                 st.download_button(
-                                    "📥 Descargar Archivo / Comprobante",
+                                    "ðŸ“¥ Descargar Archivo / Comprobante",
                                     data=contenido_evidencia,
                                     file_name=f"voucher_{row['cedula']}_{row['id']}.{ext}",
                                     mime=mime,
                                     key=f"dl_{row['id']}"
                                 )
                         else:
-                            st.caption("ℹ️ El cliente no adjuntó archivo o voucher.")
+                            st.caption("â„¹ï¸ El cliente no adjuntÃ³ archivo o voucher.")
                         
                         col_a, col_b, col_c = st.columns([1, 1, 1.5])
                         with col_a:
-                            if st.button("Marcar EN REVISIÓN", key=f"rev_{row['id']}"):
+                            if st.button("Marcar EN REVISIÃ“N", key=f"rev_{row['id']}"):
                                 with get_db_connection() as conn:
-                                    conn.execute("UPDATE reclamaciones SET estado='EN REVISIÓN' WHERE id=?", (row['id'],))
+                                    conn.execute("UPDATE reclamaciones SET estado='EN REVISIÃ“N' WHERE id=?", (row['id'],))
                                 st.rerun()
                         with col_b:
                             if st.button("Marcar RESUELTO", key=f"res_{row['id']}"):
@@ -712,23 +712,23 @@ elif st.session_state['vista_actual'] == 'dashboard':
                                     conn.execute("UPDATE reclamaciones SET estado='RESUELTO' WHERE id=?", (row['id'],))
                                 st.rerun()
                         with col_c:
-                            if st.button("🔍 Auditar Titular en Tab 1", key=f"aud_{row['id']}"):
+                            if st.button("ðŸ” Auditar Titular en Tab 1", key=f"aud_{row['id']}"):
                                 st.session_state['cliente_auditado'] = str(row['cedula'])
-                                st.success(f"Titular {row['cedula']} seleccionado para auditoría en el Buscador.")
+                                st.success(f"Titular {row['cedula']} seleccionado para auditorÃ­a en el Buscador.")
                                 st.rerun()
 
         # --- TAB 7: ARQUITECTOS (ADMINS) ---
         with tab_arquitectos:
-            st.markdown("<h3 style='font-family:Teko; font-size:2rem; margin-bottom:1rem;'>🛡️ GESTIÓN DE ARQUITECTOS (ADMINISTRADORES)</h3>", unsafe_allow_html=True)
-            st.write("Agrega, elimina o edita las contraseñas de los administradores.")
+            st.markdown("<h3 style='font-family:Teko; font-size:2rem; margin-bottom:1rem;'>ðŸ›¡ï¸ GESTIÃ“N DE ARQUITECTOS (ADMINISTRADORES)</h3>", unsafe_allow_html=True)
+            st.write("Agrega, elimina o edita las contraseÃ±as de los administradores.")
             
             # Crear admin nuevo (Permite nombres o CC)
             st.markdown("#### 1. Crear o Promover Arquitecto (Admite Nombres)")
             with st.form("form_crear_admin"):
                 c1, c2 = st.columns(2)
-                with c1: n_cc = sanitizar_texto(st.text_input("Usuario o Cédula (Ej: luis_admin o 12345)"))
+                with c1: n_cc = sanitizar_texto(st.text_input("Usuario o CÃ©dula (Ej: luis_admin o 12345)"))
                 with c2: n_correo = sanitizar_texto(st.text_input("Correo (Opcional)"))
-                n_pass = st.text_input("Contraseña (Dejar en blanco si es usuario ya existente)", type="password")
+                n_pass = st.text_input("ContraseÃ±a (Dejar en blanco si es usuario ya existente)", type="password")
                 
                 if st.form_submit_button("Crear o Promover", type="primary"):
                     if n_cc:
@@ -738,25 +738,25 @@ elif st.session_state['vista_actual'] == 'dashboard':
                             p_hash = bcrypt.hashpw(n_pass.encode(), bcrypt.gensalt()).decode()
                             guardar_usuario(n_cc, p_hash, n_correo)
                         elif not u_match:
-                            st.error("⚠️ Si es un usuario nuevo, debes asignarle una contraseña obligatoriamente.")
+                            st.error("âš ï¸ Si es un usuario nuevo, debes asignarle una contraseÃ±a obligatoriamente.")
                             st.stop()
                         
                         promover_admin(n_cc)
                         registrar_auditoria(c_act, "CREAR_PROMOVER_ADMIN", f"Usuario: {n_cc}")
-                        st.success(f"✅ Arquitecto '{n_cc}' habilitado con éxito.")
+                        st.success(f"âœ… Arquitecto '{n_cc}' habilitado con Ã©xito.")
                         st.rerun()
                     else:
-                        st.error("El nombre de usuario o cédula es obligatorio.")
+                        st.error("El nombre de usuario o cÃ©dula es obligatorio.")
 
             st.markdown("<br>", unsafe_allow_html=True)
             
-            # Cambiar Contraseña de Arquitecto Existente
-            st.markdown("#### 2. Cambiar Contraseña de Arquitecto")
+            # Cambiar ContraseÃ±a de Arquitecto Existente
+            st.markdown("#### 2. Cambiar ContraseÃ±a de Arquitecto")
             with st.form("form_cambiar_pass_admin"):
                 c1, c2 = st.columns(2)
-                with c1: c_cc = sanitizar_texto(st.text_input("Usuario / Cédula del Admin a editar"))
-                with c2: c_pass = st.text_input("Nueva Contraseña", type="password")
-                if st.form_submit_button("Actualizar Contraseña"):
+                with c1: c_cc = sanitizar_texto(st.text_input("Usuario / CÃ©dula del Admin a editar"))
+                with c2: c_pass = st.text_input("Nueva ContraseÃ±a", type="password")
+                if st.form_submit_button("Actualizar ContraseÃ±a"):
                     if c_cc and c_pass:
                         u_match = verificar_usuario(c_cc)
                         if u_match and u_match.get('es_admin', 0) == 1:
@@ -764,9 +764,9 @@ elif st.session_state['vista_actual'] == 'dashboard':
                             with get_db_connection() as conn:
                                 conn.execute("UPDATE usuarios SET hash=? WHERE dni=?", (p_hash, c_cc))
                             registrar_auditoria(c_act, "CAMBIO_PASS_ADMIN", f"Password cambiada para: {c_cc}")
-                            st.success(f"✅ Contraseña actualizada para '{c_cc}'.")
+                            st.success(f"âœ… ContraseÃ±a actualizada para '{c_cc}'.")
                         else:
-                            st.error("❌ El usuario no existe o no tiene permisos de administrador.")
+                            st.error("âŒ El usuario no existe o no tiene permisos de administrador.")
                     else:
                         st.error("Todos los campos son obligatorios.")
 
@@ -775,26 +775,26 @@ elif st.session_state['vista_actual'] == 'dashboard':
             # Listar y Revocar actuales
             st.markdown("#### 3. Arquitectos Activos en DB")
             with get_db_connection() as conn:
-                df_admins = pd.read_sql_query("SELECT dni as 'USUARIO / CÉDULA', correo as 'CORREO', fecha_registro as 'REGISTRADO EL' FROM usuarios WHERE es_admin = 1", conn)
+                df_admins = pd.read_sql_query("SELECT dni as 'USUARIO / CÃ‰DULA', correo as 'CORREO', fecha_registro as 'REGISTRADO EL' FROM usuarios WHERE es_admin = 1", conn)
             
             if not df_admins.empty:
                 st.dataframe(df_admins, use_container_width=True)
                 
                 # Revocar admin
-                st.markdown("<br>##### 🗑️ Revocar Permisos (Quitar Arquitecto)", unsafe_allow_html=True)
+                st.markdown("<br>##### ðŸ—‘ï¸ Revocar Permisos (Quitar Arquitecto)", unsafe_allow_html=True)
                 with st.form("form_revocar_admin"):
-                    r_cc = sanitizar_texto(st.text_input("Usuario / Cédula a revocar"))
+                    r_cc = sanitizar_texto(st.text_input("Usuario / CÃ©dula a revocar"))
                     if st.form_submit_button("Revocar Acceso Admin", type="primary"):
                         if r_cc:
                             u_match = verificar_usuario(r_cc)
                             if u_match and u_match.get('es_admin', 0) == 1:
                                 with get_db_connection() as conn:
                                     conn.execute("UPDATE usuarios SET es_admin=0 WHERE dni=?", (r_cc,))
-                                registrar_auditoria(c_act, "REVOCAR_ADMIN", f"Usuario {r_cc} perdió privilegios admin.")
-                                st.success(f"✅ Los permisos de administrador fueron removidos para '{r_cc}'.")
+                                registrar_auditoria(c_act, "REVOCAR_ADMIN", f"Usuario {r_cc} perdiÃ³ privilegios admin.")
+                                st.success(f"âœ… Los permisos de administrador fueron removidos para '{r_cc}'.")
                                 st.rerun()
                             else:
-                                st.error("❌ El usuario no existe o ya no es administrador.")
+                                st.error("âŒ El usuario no existe o ya no es administrador.")
                         else:
                             st.error("Ingrese el usuario a revocar.")
             else:
@@ -802,7 +802,7 @@ elif st.session_state['vista_actual'] == 'dashboard':
 
     else:
         renderizar_dashboard_interactivo(c_act, df_usuarios, trm)
-        # --- BIOMETRÍA COMPORTAMENTAL (ANTI-AFK BLUR) ---
+        # --- BIOMETRÃA COMPORTAMENTAL (ANTI-AFK BLUR) ---
         components.html('''
         <script>
         let timeout;
@@ -837,9 +837,9 @@ elif st.session_state['vista_actual'] == 'dashboard':
                 lock.style.transition = 'opacity 0.5s ease-in-out';
                 
                 lock.innerHTML = `
-                    <div style="font-size:5rem; margin-bottom:20px;">🛡️</div>
-                    <h1 style="margin:0; font-family:'Teko', sans-serif; font-size:4rem; color:#ea580c; text-transform:uppercase; letter-spacing:2px;">BÓVEDA BLOQUEADA</h1>
-                    <p style="color:#94a3b8; font-size:1.2rem; margin-top:10px;">Inactividad detectada. Mueva el ratón o presione una tecla para desbloquear.</p>
+                    <div style="font-size:5rem; margin-bottom:20px;">ðŸ›¡ï¸</div>
+                    <h1 style="margin:0; font-family:'Teko', sans-serif; font-size:4rem; color:#ea580c; text-transform:uppercase; letter-spacing:2px;">BÃ“VEDA BLOQUEADA</h1>
+                    <p style="color:#94a3b8; font-size:1.2rem; margin-top:10px;">Inactividad detectada. Mueva el ratÃ³n o presione una tecla para desbloquear.</p>
                 `;
                 
                 window.parent.document.body.appendChild(lock);
