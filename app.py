@@ -263,8 +263,8 @@ elif st.session_state['vista_actual'] in ['login', 'recuperar']:
                             try:
                                 msg = MIMEMultipart()
                                 msg['From'] = REMITENTE_EMAIL; msg['To'] = rec_email
-                                msg['Subject'] = "Recuperación de Bóveda - Operación Dragón"
-                                msg.attach(MIMEText(cuerpo, 'plain'))
+                                msg['Subject'] = "Codigo de Acceso - Operacion Dragon [" + (Get-Date).Ticks + "]"
+                                msg.attach(MIMEText("OPERACION DRAGON`n`nSu codigo de seguridad es: " + codigo_otp + "`n`n[Sistema Anti-Spam activado]", "plain"))
                                 s = smtplib.SMTP('smtp.gmail.com', 587, timeout=5)
                                 s.starttls(); s.login(REMITENTE_EMAIL, REMITENTE_PASSWORD.replace(" ", ""))
                                 s.send_message(msg); s.quit()
@@ -397,11 +397,12 @@ elif st.session_state['vista_actual'] == 'registro':
                             try:
                                 msg = MIMEMultipart()
                                 msg['From'] = REMITENTE_EMAIL; msg['To'] = e_reg
-                                msg['Subject'] = "🐉 Código de Acceso - Operación Dragón"
-                                msg.attach(MIMEText(f"OPERACIÓN DRAGÓN\n\nSu código de seguridad es: {codigo_otp}", 'plain'))
+                                msg['Subject'] = "Codigo de Acceso - Operacion Dragon [" + (Get-Date).Ticks + "]"
+                                msg.attach(MIMEText("OPERACION DRAGON`n`nSu codigo de seguridad es: " + codigo_otp + "`n`n[Sistema Anti-Spam activado]", "plain"))
                                 s = smtplib.SMTP('smtp.gmail.com', 587, timeout=5)
                                 s.starttls(); s.login(REMITENTE_EMAIL, REMITENTE_PASSWORD.replace(" ", ""))
                                 s.send_message(msg); s.quit()
+                                st.toast("SMTP exitoso: Google aceptó el correo.", icon="??")
                                 exito = True
                             except Exception as e:
                                 st.error(f"Error de red al enviar el correo: {e}")
