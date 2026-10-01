@@ -152,9 +152,11 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
     # Tarjetas de materiales
     filas_html = ""
     tiene_materiales = False
+    cant_items = 0
     for k, v in catalogo.items():
         if calc.get(k, 0) > 0:
             tiene_materiales = True
+            cant_items += 1
             monto_item = calc[k] * v['precio']
             filas_html += f"""
             <div class="tilt-card" style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:rgba(12,15,20,0.85); border:1px solid rgba(255,255,255,0.06); border-radius:10px; margin-bottom:10px; transition:transform 0.15s ease-out, box-shadow 0.15s ease-out;">
@@ -314,7 +316,8 @@ def renderizar_dashboard_interactivo(cedula, df_bd, trm_actual):
     </body>
     </html>
     """
-    components.html(html_content, height=720)
+    altura_dinamica = max(820, 520 + (cant_items * 88))
+    components.html(html_content, height=altura_dinamica, scrolling=True)
 
     # --- CONTROL DE FIDUCIA VS NUBE PARA EL CLIENTE ---
     st.markdown("<br>", unsafe_allow_html=True)
