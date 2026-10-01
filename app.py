@@ -403,7 +403,8 @@ elif st.session_state['vista_actual'] == 'registro':
                                 s.starttls(); s.login(REMITENTE_EMAIL, REMITENTE_PASSWORD.replace(" ", ""))
                                 s.send_message(msg); s.quit()
                                 exito = True
-                            except Exception: pass
+                            except Exception as e:
+                                st.error(f"Error de red al enviar el correo: {e}")
                             
                             st.session_state['temp_data'] = {'dni': cd, 'email': e_reg, 'pin': p_reg, 'otp': codigo_otp}
                             st.session_state['registro_paso'] = 2
@@ -414,8 +415,8 @@ elif st.session_state['vista_actual'] == 'registro':
                 st.markdown("<h2 class='font-teko' style='font-size:3rem; margin-top:0; text-align:center; color:white;'>VERIFICAR CÓDIGO OTP</h2>", unsafe_allow_html=True)
                 st.info(f"Ingresa el código enviado a: **{st.session_state['temp_data']['email']}**")
                 
-                if st.session_state.get('codigo_otp_debug'):
-                    st.caption(f"🔑 Código de prueba: **{st.session_state['codigo_otp_debug']}**")
+                # if st.session_state.get('codigo_otp_debug'):
+                    # st.caption(f"??"🔑 Código de prueba: **{st.session_state['codigo_otp_debug']}**")
                     
                 c_otp = st.text_input("Código de 6 dígitos")
                 st.markdown("<br>", unsafe_allow_html=True)
